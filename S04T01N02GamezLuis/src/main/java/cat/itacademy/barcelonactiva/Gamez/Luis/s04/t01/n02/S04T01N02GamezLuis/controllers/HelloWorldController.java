@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.cognoms.nom.s04.t01.n02.S04T01N02GamezLuis.controllers;
+package cat.itacademy.barcelonactiva.Gamez.Luis.s04.t01.n02.S04T01N02GamezLuis.controllers;
 
 import org.springframework.web.bind.annotation.*;
 
