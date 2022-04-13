@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FruitRepository extends JpaRepository<Fruit, Long> {
 
-
+    Fruit findByName(String name); // returns a fruit which a specific name
 }
