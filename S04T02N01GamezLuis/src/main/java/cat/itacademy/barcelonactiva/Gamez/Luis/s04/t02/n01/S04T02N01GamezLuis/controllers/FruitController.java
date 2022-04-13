@@ -1,7 +1,7 @@
-package cat.itacademy.barcelonactiva.cognoms.nom.s04.t02.n01.S04T02N01GamezLuis.controllers;
+package cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.controllers;
 
-import cat.itacademy.barcelonactiva.cognoms.nom.s04.t02.n01.S04T02N01GamezLuis.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.cognoms.nom.s04.t02.n01.S04T02N01GamezLuis.model.repository.FruitRepository;
+import cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.domain.Fruit;
+import cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.repository.FruitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

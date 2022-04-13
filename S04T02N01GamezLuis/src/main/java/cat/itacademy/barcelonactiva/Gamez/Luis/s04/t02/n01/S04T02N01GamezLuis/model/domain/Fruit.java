@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.cognoms.nom.s04.t02.n01.S04T02N01GamezLuis.model.domain;
+package cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
