@@ -1,14 +1,11 @@
 package cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.controllers;
 
 import cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.repository.FruitRepository;
 import cat.itacademy.barcelonactiva.Gamez.Luis.s04.t02.n01.S04T02N01GamezLuis.model.service.FruitServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 // Open H2 console with url: http://localhost:8080/h2-ui
@@ -19,9 +16,6 @@ public class FruitController {
 
     @Autowired // to inject TutorialRepository bean to local variable.
     private FruitServiceImp fruitServiceImp;
-
-    @Autowired
-    private FruitRepository fruitRepository;
 
     @PostMapping("/add")
     public ResponseEntity<Fruit> createFruit(@RequestBody Fruit fruit){
@@ -95,7 +89,7 @@ public class FruitController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Fruit>> getAllFruits(){
         ResponseEntity<List<Fruit>> rs;
-        List<Fruit> fruits = new ArrayList<>();
+        List<Fruit> fruits;
         try{
             fruits = fruitServiceImp.getAll();
             if(fruits.isEmpty()){
