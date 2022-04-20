@@ -6,7 +6,9 @@ import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.model.repos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BranchServiceImp implements BranchService{
@@ -19,7 +21,7 @@ public class BranchServiceImp implements BranchService{
 
         Branch branch = branchRepository.save(new Branch(branchDTO.getBranchName(), branchDTO.getBranchCountry()));
 
-        return new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branchDTO.getBranchCountry());
+        return new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branch.getBranchCountry());
     }
 
     @Override
@@ -33,7 +35,7 @@ public class BranchServiceImp implements BranchService{
             branch.setBranchName(branchDTO.getBranchName());
             branch.setBranchCountry(branchDTO.getBranchCountry());
             branch = branchRepository.save(branch);
-            branchDTO1 = new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branchDTO.getBranchCountry());
+            branchDTO1 = new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branch.getBranchCountry());
         }
 
         return branchDTO1;
@@ -48,11 +50,36 @@ public class BranchServiceImp implements BranchService{
 
     @Override
     public BranchDTO getOne(Integer id) {
-        return null;
+
+        BranchDTO branchDTO = null;
+        Branch branch;
+        Optional<Branch> branchData = branchRepository.findById(id);
+
+        if(branchData.isPresent()){
+
+            branch = branchData.get();
+            branchDTO = new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branch.getBranchCountry());
+
+        }
+
+
+        return branchDTO;
     }
 
     @Override
     public List<BranchDTO> getAll() {
-        return null;
+
+        List<Branch> branches = new ArrayList<>();
+        List<BranchDTO> branchDTOs = new ArrayList<>();
+
+        branchRepository.findAll().forEach(branch -> branches.add(branch));
+
+            for (Branch branch: branches){
+
+                branchDTOs.add(new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branch.getBranchCountry()));
+
+            }
+
+        return branchDTOs;
     }
 }

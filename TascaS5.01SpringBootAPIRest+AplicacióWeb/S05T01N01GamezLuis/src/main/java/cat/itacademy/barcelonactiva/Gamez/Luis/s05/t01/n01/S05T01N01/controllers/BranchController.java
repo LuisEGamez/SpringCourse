@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/branch")
 public class BranchController {
@@ -75,9 +77,39 @@ public class BranchController {
         ResponseEntity<BranchDTO> rs;
         BranchDTO branchDTO;
 
+        try {
+            branchDTO = branchService.getOne(id);
+            if(branchDTO == null){
+                rs = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }else{
+                rs = new ResponseEntity<>(branchDTO, HttpStatus.OK);
+            }
+        }catch (Exception e){
 
+            rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
+        }
 
+        return rs;
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<BranchDTO>> getAll(){
+
+        ResponseEntity<List<BranchDTO>> rs;
+        List<BranchDTO> branchDTOs;
+
+        try {
+            branchDTOs = branchService.getAll();
+            if(branchDTOs.isEmpty()){
+                rs = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }else {
+                rs = new ResponseEntity<>(branchDTOs, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return rs;
     }
 
 }
