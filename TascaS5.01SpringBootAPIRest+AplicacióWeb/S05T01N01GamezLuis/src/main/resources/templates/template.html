@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- Incorporamos en la etiqueta html la URL de thymeleaf -->
-<head th:fragment="head">
+<head th:fragment="head"> <!-- Creamos un fragmento que podremos importar en otro lugar -->
     <meta charset="UTF-8">
     <title>CRUD Branch</title>
-
+    <link rel="styleSheet" th:href="@{/css/bootstrap.min.css}"> <!-- Añadimos la ruta de la hoja de estilos css -->
 </head>
 <body>
     <!-- BARRA DE NAVEGACIÓN -->
     <header th:fragment="header"> <!-- Introduciremos la barra de navegación -->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <strong>MyLogo</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Enlaces del menú -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="@{/branch/home}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/views/clientes/}">Branches</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
 
     </header>
@@ -20,9 +43,13 @@
     </div>
 
     <!-- PIE PAGINA -->
-    <footer th:fragment="footer">
+    <footer th:fragment="footer" class="bg-dark text-white text-center fixed-bottom">
 
+        <div class="container">
+            <p>Copyright Javacode503 &copy; -2019</p>
+        </div>
 
+        <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
     </footer>
 

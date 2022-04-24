@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "branches")
 @ToString
 @NoArgsConstructor
-public class Branch {
+public class Branch implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

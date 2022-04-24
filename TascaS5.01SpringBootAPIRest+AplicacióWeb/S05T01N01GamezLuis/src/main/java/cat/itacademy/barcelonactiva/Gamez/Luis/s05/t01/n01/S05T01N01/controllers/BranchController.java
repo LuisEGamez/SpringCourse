@@ -6,11 +6,13 @@ import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.model.servi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+//@RestController Con esta no funciona pregunta el porqué
+@Controller
 @RequestMapping("/branch")
 public class BranchController {
 
@@ -110,6 +112,12 @@ public class BranchController {
             rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return rs;
+    }
+
+    @GetMapping("/home")
+    public String home(){
+
+        return "home";
     }
 
 }
