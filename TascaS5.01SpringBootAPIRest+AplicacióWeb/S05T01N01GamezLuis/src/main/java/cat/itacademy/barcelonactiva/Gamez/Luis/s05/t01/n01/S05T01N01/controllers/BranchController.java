@@ -42,12 +42,19 @@ public class BranchController {
 
         ModelAndView modelAndView = new ModelAndView();
         BranchDTO branchDTO = new BranchDTO();
-        //BranchDTO branchDTO1 = branchService.createBranch(branchDTO);
         modelAndView.setViewName("/branch/formCreate");
         modelAndView.addObject("title", "Nueva sucursal");
         modelAndView.addObject("branch", branchDTO);
 
 
+        return modelAndView;
+    }
+
+    @PostMapping("/add1") // Recibimos datos de la vista de ahí el método POST
+    public ModelAndView saveBranch(@ModelAttribute BranchDTO branchDTO){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/branch/getAllV1");
+        branchService.createBranch(branchDTO);
         return modelAndView;
     }
 
@@ -68,6 +75,27 @@ public class BranchController {
         }
 
         return rs;
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable("id") Integer id){
+
+        ModelAndView modelAndView = new ModelAndView();
+        BranchDTO branchDTO = branchService.getOne(id);
+        modelAndView.setViewName("/branch/formUpdate");
+        modelAndView.addObject("title", "Editar sucursal");
+        modelAndView.addObject("branch", branchDTO);
+
+
+        return modelAndView;
+    }
+
+    @PostMapping("/update") // Recibimos datos de la vista de ahí el método POST
+    public ModelAndView updateBranch(@ModelAttribute BranchDTO branchDTO){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/branch/getAllV1");
+        branchService.updateBranch(branchDTO);
+        return modelAndView;
     }
 
     @DeleteMapping("/delete/{id}")

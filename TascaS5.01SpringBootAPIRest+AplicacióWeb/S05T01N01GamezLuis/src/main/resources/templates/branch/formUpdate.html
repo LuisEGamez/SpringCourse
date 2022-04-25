@@ -10,11 +10,13 @@
             <div class="card bg-light">
             <div class="card-header bg-dark text-white" th:text="${title}"></div> <!-- Aplicamos la clase card de bootstrap -->
             <div class="card-body">
-                <form th:action="@{/branch/add1}" th:object="${branch}" method="post"> <!-- Indicamos que en este form vanos a rellenar una branch th:object
+                <form th:action="@{/branch/update}" th:object="${branch}" method="post"> <!-- Indicamos que en este form vanos a rellenar una branch th:object
                                                                                             Indicamos la acción indicando la Url donde se ejecuta th:action=
                                                                                             y el método correspondiente "POST"-->
                 <div class="row mb-3"> <!-- Añadimos que es en fila  -->
-                    <!--<input type="hidden" th:field="*{id}">-->
+
+                    <input type="hidden" th:field="*{pk_BranchID}"> <!-- Para que no nos cree registros nuevos necesitamos guardar el id del registro -->
+
                     <label for="branchName" class="col-sm-2 col-form-label">Nombre</label>
                     <div class="col-sm-6">
                         <input type="text" th:field="*{branchName}" class="form-control" id="branchName" placeholder="Nombre sucursal"> <!-- Indicamos el campo a rellenar th:filed -->

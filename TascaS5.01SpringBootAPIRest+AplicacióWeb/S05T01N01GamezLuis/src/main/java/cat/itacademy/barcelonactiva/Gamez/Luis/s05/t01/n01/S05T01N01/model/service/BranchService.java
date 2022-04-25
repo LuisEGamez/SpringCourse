@@ -12,6 +12,8 @@ public interface BranchService {
 
     BranchDTO updateBranch(String name, BranchDTO branchDTO);
 
+    BranchDTO updateBranch( BranchDTO branchDTO);
+
     void deleteBranch(Integer id);
 
     BranchDTO getOne(Integer id);

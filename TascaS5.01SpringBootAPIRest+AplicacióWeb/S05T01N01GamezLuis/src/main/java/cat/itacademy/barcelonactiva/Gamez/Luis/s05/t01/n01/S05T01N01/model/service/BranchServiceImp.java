@@ -42,6 +42,26 @@ public class BranchServiceImp implements BranchService{
     }
 
     @Override
+    public BranchDTO updateBranch(BranchDTO branchDTO) {
+        BranchDTO branchDTO1 = null;
+
+        Optional<Branch> branchData = branchRepository.findById(branchDTO.getPk_BranchID());
+
+        Branch branch = new Branch();
+
+        if(branchData.isPresent()){
+            branch.setPk_BranchID(branchDTO.getPk_BranchID());
+            branch.setBranchName(branchDTO.getBranchName());
+            branch.setBranchCountry(branchDTO.getBranchCountry());
+            branch = branchRepository.save(branch);
+            branchDTO1 = new BranchDTO(branch.getPk_BranchID(), branch.getBranchName(), branch.getBranchCountry());
+        }
+
+        return branchDTO1;
+    }
+
+
+    @Override
     public void deleteBranch(Integer id) {
 
         branchRepository.deleteById(id);
