@@ -27,27 +27,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="lsOfB:${listOfBranches}"> <!-- Llamamos a nuestra lista de clientes haciendo un bucle each -->
-                    <th scope="row" th:text="${lsOfB.pk_BranchID}"></th>
-                    <td th:text="${lsOfB.branchName}"></td>
-                    <td th:text="${lsOfB.branchCountry}"></td>
-                    <td th:text="${lsOfB.branchType}"></td>
-                    <td>
+                    <tr th:each="lsOfB:${listOfBranches}"> <!-- Llamamos a nuestra lista de clientes haciendo un bucle each -->
+                        <th scope="row" th:text="${lsOfB.pk_BranchID}"></th>
+                        <td th:text="${lsOfB.branchName}"></td>
+                        <td th:text="${lsOfB.branchCountry}"></td>
+                        <td th:text="${lsOfB.branchType}"></td>
+                        <td>
 
-                    </td>
-                    <td>
+                            <a class="btn btn-success btn-sm" th:href="@{/branch/edit/}+${lsOfB.pk_BranchID}" th:text="'Editar'" title="Editar registro"> <!-- Adding edit button -->
+                            </a>
 
+                        </td>
+                        <td>
 
-                    </td>
+                            <a class="btn btn-danger btn-sm" th:href="@{/branch/delete/}+${lsOfB.pk_BranchID}"
+                               th:text="'Eliminar'" title="Eliminar registro" onclick="return confirm('Esta seguro de eliminar el registro');"> <!-- Adding delete button with confirmation-->
+                            </a>
 
-                    <!--<td>
-                        <a class="btn btn-success btn-sm" th:href="@{/views/clientes/edit/} + ${cl.id}" th:text="'Editar'" title="Modificar registro"></a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" th:href="@{/views/clientes/delete/} + ${cl.id}" th:text="'Eliminar'" title="Eliminar registro"
-                           onclick="return confirm('Esta seguro de eliminar?')"></a>
-                    </td>-->
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

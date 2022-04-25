@@ -3,6 +3,8 @@ package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.model.dto;
 import lombok.*;
 
 
+
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,8 +15,10 @@ public class BranchDTO{
     @Getter @Setter
     private Integer pk_BranchID;
     @Getter @Setter
+    @NotEmpty
     private String branchName;
     @Getter @Setter
+    @NotEmpty
     private String branchCountry;
     @Getter @Setter
     private String branchType;

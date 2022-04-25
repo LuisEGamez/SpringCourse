@@ -8,39 +8,38 @@
 <br>
         <div class="container">
             <div class="card bg-light">
-            <div class="card-header bg-dark text-white" th:text="${title}"></div> <!-- Aplicamos la clase card de bootstrap -->
-            <div class="card-body">
-                <form th:action="@{/branch/add1}" th:object="${branch}" method="post"> <!-- Indicamos que en este form vanos a rellenar una branch th:object
-                                                                                            Indicamos la acción indicando la Url donde se ejecuta th:action=
-                                                                                            y el método correspondiente "POST"-->
-                    <div class="row mb-3"> <!-- Añadimos que es en fila  -->
-                        <!--<input type="hidden" th:field="*{id}">-->
-                        <label for="branchName" class="col-sm-2 col-form-label">Nombre</label>
-                        <div class="col-sm-6">
-                            <input type="text" th:field="*{branchName}" class="form-control" id="branchName" placeholder="Nombre sucursal"> <!-- Indicamos el campo a rellenar th:filed -->
-                            <!--<small class="from-text text-danger" th:if="${#fields.hasErrors('nombres')}"
-                                   th:errors="*{nombres}">
-                            </small>-->
-                        </div>
-                    </div>
+                <div class="card-header bg-dark text-white" th:text="${title}"></div> <!-- Aplicamos la clase card de bootstrap -->
+                <div class="card-body">
+                    <form th:action="@{/branch/add}" th:object="${branch}" method="post"> <!-- Indicamos que en este form vanos a rellenar una branch th:object
+                                                                                                Indicamos la acción indicando la Url donde se ejecuta th:action=
+                                                                                                y el método correspondiente "POST"-->
+                        <div class="row mb-3"> <!-- Añadimos que es en fila  -->
+                            <!--<input type="hidden" th:field="*{id}">-->
+                            <label for="branchName" class="col-sm-2 col-form-label">Nombre</label>
+                            <div class="col-sm-6">
+                                <input type="text" th:field="*{branchName}" class="form-control" id="branchName" placeholder="Nombre sucursal"> <!-- Indicamos el campo a rellenar th:filed -->
+                                <small class="from-text text-danger" th:if="${#fields.hasErrors('branchName')}" th:errors="*{branchName}">  </small>
 
-                    <div class="row mb-3"> <!-- Añadimos que es en fila  -->
-                        <!--<input type="hidden" th:field="*{id}">-->
-                        <label for="branchCountry" class="col-sm-2 col-form-label">Pais</label>
-                        <div class="col-sm-6">
-                            <input type="text" th:field="*{branchCountry}" class="form-control" id="branchCountry" placeholder="País"> <!-- Indicamos el campo a rellenar th:filed -->
-                            <!--<small class="from-text text-danger" th:if="${#fields.hasErrors('nombres')}"
-                                   th:errors="*{nombres}">
-                            </small>-->
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="card-footer bg-dark">
-                        <input type="submit" class="btn btn-primary btn-sm" value="Guardar"/>
-                    </div>
-                </form>
+                        <div class="row mb-3"> <!-- Añadimos que es en fila  -->
+                            <!--<input type="hidden" th:field="*{id}">-->
+                            <label for="branchCountry" class="col-sm-2 col-form-label">Pais</label>
+                            <div class="col-sm-6">
+                                <input type="text" th:field="*{branchCountry}" class="form-control" id="branchCountry" placeholder="País"> <!-- Indicamos el campo a rellenar th:filed -->
+                                <!--<small class="from-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                                       th:errors="*{nombres}">
+                                </small>-->
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-dark">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Guardar"/>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
 
     <footer th:replace="template :: footer"></footer>
