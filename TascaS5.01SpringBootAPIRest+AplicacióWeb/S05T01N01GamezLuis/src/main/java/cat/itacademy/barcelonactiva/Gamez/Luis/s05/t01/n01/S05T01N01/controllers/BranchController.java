@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-//@RestController Con esta no funciona pregunta el porqué
+//@RestController //Con esta no funciona pregunta el porqué
 @Controller
 @RequestMapping("/branch")
 public class BranchController {
@@ -112,6 +114,17 @@ public class BranchController {
             rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return rs;
+    }
+
+
+    @GetMapping("/getAllV1") // Test!!!!!! No se como hacer que funcione con ResponseEntity
+    public String getAllV1(Model model){
+
+        List<BranchDTO> branchDTOs = branchService.getAll();
+        model.addAttribute("title", "List of branches"); // Añadimos el nombre del atributo y el valor para mostrarlo en la vista
+        model.addAttribute("listOfBranches", branchDTOs);
+
+        return "/branch/list";
     }
 
     @GetMapping("/home")

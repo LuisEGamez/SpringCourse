@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
+@ToString
 public class BranchDTO{
 
     @Getter @Setter

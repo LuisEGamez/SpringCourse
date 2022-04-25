@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- Incorporamos en la etiqueta html la URL de thymeleaf indicamos que lo estamos utilizando-->
+<head th:replace="template :: head"> <!-- Remplazamos el head de nuestro, template. -->
+
+</head>
+<body>
+    <header th:replace="template :: header"></header>
+        <div class="container">
+            <h1 th:text="${title}"></h1>
+            <!--<p th:text="${listOfBranches}"></p>--> <!-- Mostramos la variable en un texto -->
+        </div>
+
+        <div class="container">
+            <!--<a class="btn btn-primary btn-sm" th:href="@{/views/clientes/create}" th:text="'Nuevo cliente'" title="Crear nuevo registro">
+            </a>-->
+
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Tipo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="lsOfB:${listOfBranches}"> <!-- Llamamos a nuestra lista de clientes haciendo un bucle each -->
+                    <th scope="row" th:text="${lsOfB.pk_BranchID}"></th>
+                    <td th:text="${lsOfB.branchName}"></td>
+                    <td th:text="${lsOfB.branchCountry}"></td>
+                    <td th:text="${lsOfB.branchType}"></td>
+                    <!--<td>
+                        <a class="btn btn-success btn-sm" th:href="@{/views/clientes/edit/} + ${cl.id}" th:text="'Editar'" title="Modificar registro"></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" th:href="@{/views/clientes/delete/} + ${cl.id}" th:text="'Eliminar'" title="Eliminar registro"
+                           onclick="return confirm('Esta seguro de eliminar?')"></a>
+                    </td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <footer th:replace="template :: footer"></footer>
+</body>
+</html>
