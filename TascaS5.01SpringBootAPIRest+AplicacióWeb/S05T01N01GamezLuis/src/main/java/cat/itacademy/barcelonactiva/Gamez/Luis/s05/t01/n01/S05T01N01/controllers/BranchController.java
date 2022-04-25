@@ -98,8 +98,17 @@ public class BranchController {
         return modelAndView;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteBranch(@PathVariable("id") Integer id){
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteBranch(@PathVariable("id") Integer id){
+
+        ModelAndView modelAndView = new ModelAndView();
+        branchService.deleteBranch(id);
+        modelAndView.setViewName("redirect:/branch/getAllV1");
+        return modelAndView;
+    }
+
+    @DeleteMapping("/delete/{id}") // Don't work with MVC
+    public ResponseEntity<HttpStatus> deleteBranch1(@PathVariable("id") Integer id){
 
         ResponseEntity<HttpStatus> rs;
 
