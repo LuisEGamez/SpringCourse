@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- Incorporamos en la etiqueta html la URL de thymeleaf indicamos que lo estamos utilizando-->
+<head th:replace="template :: head"> <!-- Remplazamos el head de nuestro, template. -->
+
+</head>
+<body>
+    <header th:replace="template :: header"></header>
+<br>
+        <div class="container">
+            <div class="card bg-light">
+            <div class="card-header bg-dark text-white" th:text="${title}"></div> <!-- Aplicamos la clase card de bootstrap -->
+            <div class="card-body">
+                <form th:object="${branch}"> <!-- Indicamos que en este form vanos a rellenar una branch th:object -->
+                <div class="row mb-3"> <!-- Añadimos que es en fila  -->
+                    <!--<input type="hidden" th:field="*{id}">-->
+                    <label for="branchName" class="col-sm-2 col-form-label">Nombre</label>
+                    <div class="col-sm-6">
+                        <input type="text" th:field="*{branchName}" class="form-control" id="branchName" placeholder="Nombre sucursal"> <!-- Indicamos el campo a rellenar th:filed -->
+                        <!--<small class="from-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                               th:errors="*{nombres}">
+                        </small>-->
+                    </div>
+                </div>
+
+                <div class="row mb-3"> <!-- Añadimos que es en fila  -->
+                    <!--<input type="hidden" th:field="*{id}">-->
+                    <label for="branchCountry" class="col-sm-2 col-form-label">Pais</label>
+                    <div class="col-sm-6">
+                        <input type="text" th:field="*{branchCountry}" class="form-control" id="branchCountry" placeholder="País"> <!-- Indicamos el campo a rellenar th:filed -->
+                        <!--<small class="from-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                               th:errors="*{nombres}">
+                        </small>-->
+                    </div>
+                </div>
+
+                <div class="card-footer bg-dark">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Guardar"/>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+
+    <footer th:replace="template :: footer"></footer>
+</body>
+</html>

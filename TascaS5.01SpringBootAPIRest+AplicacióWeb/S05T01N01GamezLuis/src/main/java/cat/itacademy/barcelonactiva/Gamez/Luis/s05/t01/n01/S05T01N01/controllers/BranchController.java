@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class BranchController {
     private BranchService branchService;
 
     @PostMapping("/add")
-    public ResponseEntity<BranchDTO> createFruit(@RequestBody BranchDTO branchDTO){
+    public ResponseEntity<BranchDTO> createBranch(@RequestBody BranchDTO branchDTO){
 
         ResponseEntity<BranchDTO> rs;
 
@@ -34,6 +35,20 @@ public class BranchController {
             rs = new ResponseEntity<>(branchDTO1, HttpStatus.CREATED);
         }
         return rs;
+    }
+
+    @GetMapping("/create")
+    public ModelAndView createBranch1(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        BranchDTO branchDTO = new BranchDTO();
+        //BranchDTO branchDTO1 = branchService.createBranch(branchDTO);
+        modelAndView.setViewName("/branch/formCreate");
+        modelAndView.addObject("title", "Nueva sucursal");
+        modelAndView.addObject("branch", branchDTO);
+
+
+        return modelAndView;
     }
 
     @PutMapping("/update")
@@ -97,7 +112,7 @@ public class BranchController {
         return rs;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAll") // Usando ResponseEntity para PostMan
     public ResponseEntity<List<BranchDTO>> getAll(){
 
         ResponseEntity<List<BranchDTO>> rs;
@@ -117,7 +132,7 @@ public class BranchController {
     }
 
 
-    @GetMapping("/getAllV1") // Test!!!!!! No se como hacer que funcione con ResponseEntity
+    @GetMapping("/getAllV1") // Usando la interface model
     public String getAllV1(Model model){
 
         List<BranchDTO> branchDTOs = branchService.getAll();
@@ -125,6 +140,18 @@ public class BranchController {
         model.addAttribute("listOfBranches", branchDTOs);
 
         return "/branch/list";
+    }
+
+    @GetMapping("/getAllV2") // Usando la clase ModelAndView
+    public ModelAndView getAllVX(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        List<BranchDTO> branchDTOs = branchService.getAll();
+        modelAndView.setViewName("/branch/list");
+        modelAndView.addObject("title", "List of branches");
+        modelAndView.addObject("listOfBranches", branchDTOs);
+
+        return modelAndView;
     }
 
     @GetMapping("/home")
