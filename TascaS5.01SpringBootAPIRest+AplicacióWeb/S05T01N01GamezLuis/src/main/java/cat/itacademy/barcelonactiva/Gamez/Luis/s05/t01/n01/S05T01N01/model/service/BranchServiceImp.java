@@ -17,7 +17,7 @@ public class BranchServiceImp implements BranchService{
     private BranchRepository branchRepository;
 
     @Override
-    public BranchDTO createBranch(BranchDTO branchDTO) {
+    public BranchDTO saveBranch(BranchDTO branchDTO) {
 
         Branch branch = branchRepository.save(new Branch(branchDTO.getBranchName(), branchDTO.getBranchCountry()));
 

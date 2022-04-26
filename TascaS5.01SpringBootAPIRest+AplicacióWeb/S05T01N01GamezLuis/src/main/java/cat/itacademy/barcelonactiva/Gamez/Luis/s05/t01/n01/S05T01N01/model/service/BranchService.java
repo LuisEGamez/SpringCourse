@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BranchService {
 
-    BranchDTO createBranch(BranchDTO branchDTO);
+    BranchDTO saveBranch(BranchDTO branchDTO);
 
     BranchDTO updateBranch(String name, BranchDTO branchDTO);
 

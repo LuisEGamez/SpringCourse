@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//@RestController //Con esta no funciona pregunta el porqué
 
 @Controller
 @RequestMapping("/branch")
@@ -32,7 +29,7 @@ public class BranchController {
         BranchDTO branchDTO = new BranchDTO();
         modelAndView.setViewName("/branch/formCreate");
         modelAndView.addObject("title", "Nueva sucursal");
-        modelAndView.addObject("branch", branchDTO);
+        modelAndView.addObject("branchDTO", branchDTO);
 
 
         return modelAndView;
@@ -46,11 +43,11 @@ public class BranchController {
             System.out.println("ha habido errores");
             modelAndView.setViewName("/branch/formCreate");
             modelAndView.addObject("title", "Nueva sucursal");
-            modelAndView.addObject("branch", branchDTO);
+            modelAndView.addObject("branchDTO", branchDTO);
 
         }else {
             modelAndView.setViewName("redirect:/branch/getAll");
-            branchService.createBranch(branchDTO);
+            branchService.saveBranch(branchDTO);
         }
 
         return modelAndView;
@@ -62,29 +59,67 @@ public class BranchController {
     public ModelAndView edit(@PathVariable("id") Integer id){
 
         ModelAndView modelAndView = new ModelAndView();
-        BranchDTO branchDTO = branchService.getOne(id);
-        modelAndView.setViewName("/branch/formUpdate");
-        modelAndView.addObject("title", "Editar sucursal");
-        modelAndView.addObject("branch", branchDTO);
+        BranchDTO branchDTO;
 
+        if(id > 0){
+
+            branchDTO = branchService.getOne(id);
+
+            if(branchDTO == null){
+                System.out.println("Error: ID doesn't exist");
+                modelAndView.setViewName("redirect:/branch/getAll");
+            }else {
+                modelAndView.setViewName("/branch/formUpdate");
+                modelAndView.addObject("title", "Editar sucursal");
+                modelAndView.addObject("branchDTO", branchDTO);
+            }
+
+        }else {
+            System.out.println("Error: ID error");
+            modelAndView.setViewName("redirect:/branch/getAll");
+        }
 
         return modelAndView;
     }
 
     @PostMapping("/update") // Recibimos datos de la vista de ahí el método POST
-    public ModelAndView updateBranch(@ModelAttribute BranchDTO branchDTO){
+    public ModelAndView updateBranch(@Valid @ModelAttribute BranchDTO branchDTO, BindingResult result){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/branch/getAll");
-        branchService.updateBranch(branchDTO);
+
+        if(result.hasErrors()){
+            modelAndView.setViewName("/branch/formUpdate");
+            modelAndView.addObject("title", "Editar sucursal");
+            modelAndView.addObject("branchDTO", branchDTO);
+        }else {
+            modelAndView.setViewName("redirect:/branch/getAll");
+            branchService.updateBranch(branchDTO);
+        }
+
         return modelAndView;
     }
 
     @GetMapping("/delete/{id}")
     public ModelAndView deleteBranch(@PathVariable("id") Integer id){
-
         ModelAndView modelAndView = new ModelAndView();
-        branchService.deleteBranch(id);
-        modelAndView.setViewName("redirect:/branch/getAll");
+        BranchDTO branchDTO;
+
+        if(id > 0){
+
+            branchDTO = branchService.getOne(id);
+
+            if(branchDTO == null){
+                System.out.println("Error: ID doesn't exist");
+                modelAndView.setViewName("redirect:/branch/getAll");
+            }else {
+                branchService.deleteBranch(id);
+                modelAndView.setViewName("redirect:/branch/getAll");
+            }
+
+        }else {
+            System.out.println("Error: ID error");
+            modelAndView.setViewName("redirect:/branch/getAll");
+        }
+
         return modelAndView;
     }
 
