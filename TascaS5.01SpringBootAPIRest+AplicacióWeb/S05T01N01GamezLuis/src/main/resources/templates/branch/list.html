@@ -7,12 +7,9 @@
     <header th:replace="template :: header"></header>
         <div class="container">
             <h1 th:text="${title}"></h1>
-            <!--<p th:text="${listOfBranches}"></p>--> <!-- Mostramos la variable en un texto -->
         </div>
 
         <div class="container">
-            <a class="btn btn-primary btn-sm" th:href="@{/branch/create}" th:text="'Nueva sucursal'" title="Crear nuevo registro"> <!-- Añadimos un botón para que nos redireccione a la página crear -->
-            </a>
 
             <table class="table">
                 <thead class="table-dark">
@@ -20,7 +17,7 @@
                     <th scope="col">Id</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">País</th>
-                    <th scope="col">Tipo</th>
+                    <th scope="col">Info</th>
                     <th scope="col">Editar</th>
                     <th scope="col">Eliminar</th>
 
@@ -31,7 +28,12 @@
                         <th scope="row" th:text="${lsOfB.pk_BranchID}"></th>
                         <td th:text="${lsOfB.branchName}"></td>
                         <td th:text="${lsOfB.branchCountry}"></td>
-                        <td th:text="${lsOfB.branchType}"></td>
+                        <td>
+
+                            <a class="btn btn-info btn-sm" th:href="@{/branch/getOne/}+${lsOfB.pk_BranchID}" th:text="'Info'" title="Informacion sucursal"> <!-- Adding edit button -->
+                            </a>
+
+                        </td>
                         <td>
 
                             <a class="btn btn-success btn-sm" th:href="@{/branch/edit/}+${lsOfB.pk_BranchID}" th:text="'Editar'" title="Editar registro"> <!-- Adding edit button -->

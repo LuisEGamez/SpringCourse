@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <title>CRUD Branch</title>
     <link rel="styleSheet" th:href="@{/css/bootstrap.min.css}"> <!-- Añadimos la ruta de la hoja de estilos css -->
+    <style type="text/css">
+        a.button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 40px;
+        }
+
+
+        </style>
 </head>
 <body>
     <!-- BARRA DE NAVEGACIÓN -->
@@ -23,9 +38,6 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" th:href="@{/branch/home}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/branch/getAll}">Branches</a>
                         </li>
                     </ul>
                 </div>
@@ -67,7 +79,7 @@
     <footer th:fragment="footer" class="bg-dark text-white text-center fixed-bottom">
 
         <div class="container">
-            <p>Copyright Javacode503 &copy; -2019</p>
+            <p>Copyright LGA &copy; -2022</p>
         </div>
 
         <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>

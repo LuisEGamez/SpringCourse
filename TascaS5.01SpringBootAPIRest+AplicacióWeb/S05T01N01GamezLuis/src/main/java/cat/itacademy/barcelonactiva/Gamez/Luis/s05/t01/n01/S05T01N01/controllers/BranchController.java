@@ -134,25 +134,32 @@ public class BranchController {
     }
 
     @GetMapping("/getOne/{id}")
-    public ResponseEntity<BranchDTO> getOne(@PathVariable("id") Integer id){
-
-        ResponseEntity<BranchDTO> rs;
+    public ModelAndView getOne(@PathVariable("id") Integer id, RedirectAttributes attributes){
+        ModelAndView modelAndView = new ModelAndView();
         BranchDTO branchDTO;
 
-        try {
-            branchDTO = branchService.getOne(id);
-            if(branchDTO == null){
-                rs = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }else{
-                rs = new ResponseEntity<>(branchDTO, HttpStatus.OK);
-            }
-        }catch (Exception e){
+        if(id > 0){
 
-            rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            branchDTO = branchService.getOne(id);
+
+            if(branchDTO == null){
+                modelAndView.setViewName("redirect:/branch/getAll");
+                attributes.addFlashAttribute("error", "El ID no existe");
+
+            }else {
+                modelAndView.setViewName("/branch/infoBranch");
+                modelAndView.addObject("title", "Información sucursal");
+                modelAndView.addObject("branchDTO", branchDTO);
+
+            }
+
+        }else {
+            modelAndView.setViewName("redirect:/branch/getAll");
+            attributes.addFlashAttribute("error", "ID error");
 
         }
 
-        return rs;
+        return modelAndView;
     }
 
     @GetMapping("/getAll") // Usando la clase ModelAndView
@@ -246,4 +253,28 @@ public class BranchController {
             rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return rs;
-    }*/
+    }
+
+    @GetMapping("/getOne/{id}")
+    public ResponseEntity<BranchDTO> getOne(@PathVariable("id") Integer id){
+
+        ResponseEntity<BranchDTO> rs;
+        BranchDTO branchDTO;
+
+        try {
+            branchDTO = branchService.getOne(id);
+            if(branchDTO == null){
+                rs = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }else{
+                rs = new ResponseEntity<>(branchDTO, HttpStatus.OK);
+            }
+        }catch (Exception e){
+
+            rs = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+        return rs;
+    }
+
+    */

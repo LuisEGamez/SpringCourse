@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- Incorporamos en la etiqueta html la URL de thymeleaf indicamos que lo estamos utilizando-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:> <!-- Incorporamos en la etiqueta html la URL de thymeleaf indicamos que lo estamos utilizando-->
 <head th:replace="template :: head"> <!-- Remplazamos el head de nuestro, template. -->
-
 </head>
+
 <body>
     <header th:replace="template :: header"></header>
+
         <div class="container">
-            <h1>Texto prueba</h1>
+            <div class="position-absolute top-50 start-50 translate-middle">
+
+                <a class="button" type="button" th:href="@{/branch/create}" th:text="'Nueva sucursal'" title="Crear nuevo registro"></a>
+                <a class="button" type="button" th:href="@{/branch/getAll}" th:text="'Sucursales'" title="Lisa de sucursales"></a>
+
+            </div>
         </div>
+
+
+
 
     <footer th:replace="template :: footer"></footer>
 </body>
