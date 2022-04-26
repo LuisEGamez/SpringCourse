@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n02.model;
+package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n02.model.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
