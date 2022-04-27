@@ -4,15 +4,11 @@ package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.controller
 import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.model.dto.BranchDTO;
 import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n01.S05T01N01.model.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -85,7 +81,7 @@ public class BranchController {
         return modelAndView;
     }
 
-    @PostMapping("/update") // Recibimos datos de la vista de ahí el método POST
+    @PostMapping("/update")
     public ModelAndView updateBranch(@Valid @ModelAttribute BranchDTO branchDTO, BindingResult result,
                                      RedirectAttributes attributes){
         ModelAndView modelAndView = new ModelAndView();
@@ -162,7 +158,7 @@ public class BranchController {
         return modelAndView;
     }
 
-    @GetMapping("/getAll") // Usando la clase ModelAndView
+    @GetMapping("/getAll")
     public ModelAndView getAllVX(){
 
         ModelAndView modelAndView = new ModelAndView();
