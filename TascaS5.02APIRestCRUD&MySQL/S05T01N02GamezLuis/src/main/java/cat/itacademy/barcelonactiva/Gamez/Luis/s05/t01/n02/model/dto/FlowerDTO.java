@@ -22,14 +22,14 @@ public class FlowerDTO {
     @Getter @Setter
     private String flowerType;
     private final List<String> countries = Arrays.asList("Austria","Belgium", "Bulgaria", "Croatia", "Cyprus", "Czechia",
-                                                            "Denmark", "Estonia", "Finland", " France", "Germany", "Greece",
+                                                            "Denmark", "Estonia", "Finland", "France", "Germany", "Greece",
                                                             "Hungary", "Ireland", "Italy", "Latvia", "Luxembourg", "Malta",
                                                             "Netherlands", "Poland", "Portugal", "Romania", "Slovakia", "Slovenia",
                                                             "Spain", "Sweden");
 
-    public FlowerDTO(String branchName, String branchCountry) {
-        this.flowerName = branchName;
-        this.flowerCountry = branchCountry;
+    public FlowerDTO(String flowerName, String flowerCountry) {
+        this.flowerName = flowerName;
+        this.flowerCountry = flowerCountry;
 
     }
 

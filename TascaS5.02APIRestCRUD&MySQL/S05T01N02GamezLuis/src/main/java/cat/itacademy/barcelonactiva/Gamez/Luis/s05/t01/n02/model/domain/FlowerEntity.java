@@ -21,7 +21,7 @@ public class FlowerEntity implements Serializable {
     @Column(name = "flowername")
     @Getter @Setter
     private String flowerName;
-    @Column(name = "branchcountry")
+    @Column(name = "flowercountry")
     @Getter @Setter
     private String flowerCountry;
 

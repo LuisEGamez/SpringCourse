@@ -34,10 +34,10 @@ public class FlowerController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<FlowerDTO> updateFlower(@RequestParam String branchName, @RequestBody FlowerDTO flowerDTO){
+    public ResponseEntity<FlowerDTO> updateFlower(@RequestParam String flowerName, @RequestBody FlowerDTO flowerDTO){
 
         ResponseEntity<FlowerDTO> rs;
-        FlowerDTO flowerDTO1 = flowerService.updateFlower(branchName, flowerDTO);
+        FlowerDTO flowerDTO1 = flowerService.updateFlower(flowerName, flowerDTO);
         if(flowerDTO1 != null){
             try {
                 rs = new ResponseEntity<>(flowerDTO1, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class FlowerController {
         return rs;
     }
 
-    @DeleteMapping("/delete1/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteFlower(@PathVariable("id") Integer id){
 
         ResponseEntity<HttpStatus> rs;
