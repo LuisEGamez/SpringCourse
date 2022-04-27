@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 @RestController // annotation is used to define a controller and to indicate that the return value of the methods should be bound to the web response body.
 @RequestMapping("/fruit")
 public class FruitController {
