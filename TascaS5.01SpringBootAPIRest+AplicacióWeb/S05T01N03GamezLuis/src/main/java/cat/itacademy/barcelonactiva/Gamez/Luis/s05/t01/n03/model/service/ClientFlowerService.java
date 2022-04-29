@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class ClientFlowerService {
@@ -30,36 +33,60 @@ public class ClientFlowerService {
             return response;
     }
 
-    public Mono<ClientFlowerDTO> saveClientFlower1(ClientFlowerDTO clientFlowerDTO){
+
+    public Mono<ResponseEntity<ClientFlowerDTO>> updateClientFlower(String clientFlowerName, ClientFlowerDTO clientFlowerDTO) {
+
         // Preparing a Request
-        // Define the Method
-        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.post();
+            // Define the Method
+            WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.put();
 
-        // Define the URL
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri("/add");
+            // Define the URL
+            WebClient.RequestBodySpec bodySpec = uriSpec.uri("/update?flowerName=" + clientFlowerName);
 
-        // Define the body
-        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(clientFlowerDTO);
+            // Define the body
+            WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(clientFlowerDTO);
 
-        // Getting a Response
-        Mono<ClientFlowerDTO> response = headersSpec.exchangeToMono(clientResponse -> {
+            // Getting a Response
+            Mono<ResponseEntity<ClientFlowerDTO>> response = headersSpec.retrieve().toEntity(ClientFlowerDTO.class).onErrorResume(WebClientResponseException.class,
+                    ex -> ex.getRawStatusCode() == 404 ? Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND)) : Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
 
-            if (clientResponse.statusCode().equals(HttpStatus.CREATED)){
+            return response;
 
-                return clientResponse.bodyToMono(ClientFlowerDTO.class);
-
-            }else {
-                System.out.println("Error");
-                return clientResponse.createException().flatMap(Mono :: error);
-
-            }
-
-        });
-
-        return response;
     }
 
 
+    public Mono<ResponseEntity<HttpStatus>> deleteClientFlower(Integer id) {
+
+        // Preparing a Request
+            // Define the Method
+            WebClient.RequestHeadersUriSpec<?> uriSpec = client.delete();
+
+            // Define the URL
+            WebClient.RequestHeadersSpec<?> headersSpec =  uriSpec.uri("/delete/"+id);
+
+            // Getting a Response
+            Mono<ResponseEntity<HttpStatus>> response = headersSpec.retrieve().toEntity(HttpStatus.class).onErrorResume(WebClientResponseException.class,
+                    ex -> ex.getRawStatusCode() == 404 ? Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND)) : Mono.error(ex));
 
 
+            return response;
+    }
+
+    public Mono<ResponseEntity<ClientFlowerDTO>> getOneClienteFlower(Integer id) {
+
+        return client.get()
+                .uri("/getOne/"+id)
+                .retrieve().toEntity(ClientFlowerDTO.class).
+                onErrorResume(WebClientResponseException.class,
+                        ex -> ex.getRawStatusCode() == 404 ? Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND)) : Mono.error(ex));
+    }
+
+    public Mono<ResponseEntity<List<ClientFlowerDTO>>> getAllClienteFlower() {
+
+        return client.get()
+                .uri("/getAll")
+                .retrieve().toEntityList(ClientFlowerDTO.class)
+                .onErrorResume(WebClientResponseException.class,
+                        ex -> ex.getRawStatusCode() == 500 ? Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)) : Mono.error(ex));
+    }
 }
