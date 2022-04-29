@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*
+    The Swagger UI page will then be available at http://localhost:9001/swagger-ui.html
+    OpenAPI description will be available at the following url for json format: http://localhost:9001/v3/api-docs
+*/
+
 @RestController
 @RequestMapping("/flower")
 public class FlowerController {
