@@ -26,7 +26,7 @@ public class FruitController {
 
         if (fruit1 == null){
 
-            rs = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            rs = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);// comments
         }else {
             rs = new ResponseEntity<>(fruit1, HttpStatus.CREATED);
         }
@@ -46,7 +46,7 @@ public class FruitController {
             }
 
         }else {
-            rs = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            rs = new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // comentar
         }
 
         return rs;
