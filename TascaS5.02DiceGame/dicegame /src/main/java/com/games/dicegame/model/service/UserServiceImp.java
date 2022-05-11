@@ -1,14 +1,18 @@
 package com.games.dicegame.model.service;
 
 import com.games.dicegame.model.domain.AppUser;
+import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
+import com.games.dicegame.model.repository.GameRepository;
 import com.games.dicegame.model.repository.RoleRepository;
 import com.games.dicegame.model.util.AppUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,6 +22,9 @@ public class UserServiceImp implements UserService{
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private GameRepository gameRepository;
 
 
     @Override
@@ -65,6 +72,28 @@ public class UserServiceImp implements UserService{
         Role role = roleRepository.findByName(roleName);
         appUser.getRoles().add(role);
 
+    }
+
+    @Override
+    public Game play(Integer id) {
+
+        Game game = null;
+        AppUser appUser = null;
+        Optional<AppUser> appUserData = appUserRepository.findById(id);
+
+        if (appUserData.isPresent()){
+
+            game = gameRepository.save(new Game());
+
+            appUser = appUserData.get();
+
+            appUser.getGames().add(game);
+
+
+        }
+
+
+        return game;
     }
 
 

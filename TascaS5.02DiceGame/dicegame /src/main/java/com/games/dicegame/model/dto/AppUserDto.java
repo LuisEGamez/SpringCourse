@@ -1,5 +1,6 @@
 package com.games.dicegame.model.dto;
 
+import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.domain.Role;
 import lombok.Data;
 
@@ -23,12 +24,14 @@ public class AppUserDto implements Serializable {
 
     private Collection<Role> roles = new ArrayList<>();
 
+    private Collection<Game> games = new ArrayList<>();
+
     public AppUserDto(String email, String password, String username) {
         id = null;
         this.email = email;
         this.password = password;
         if(username==null){
-            this.username = "ANÓNIMO";
+            this.username = "ANONYMOUS";
         }else {
             this.username = username.toUpperCase();
         }
