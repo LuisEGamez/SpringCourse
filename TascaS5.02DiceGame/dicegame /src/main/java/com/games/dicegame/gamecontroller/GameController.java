@@ -1,16 +1,15 @@
 package com.games.dicegame.gamecontroller;
 
 
+import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
+import com.games.dicegame.model.util.RoleToUserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -32,6 +31,14 @@ public class GameController {
         }
 
         return response;
+    }
+
+    @PutMapping("/addRoles")
+    public ResponseEntity<HttpStatus> addRole(@RequestBody RoleToUserForm form){
+
+        userService.addRoleToUser(form.getEmail(), form.getRoleName());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

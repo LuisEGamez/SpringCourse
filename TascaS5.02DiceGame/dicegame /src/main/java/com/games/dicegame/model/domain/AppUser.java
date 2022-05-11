@@ -7,6 +7,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity(name = "users")
@@ -27,6 +29,9 @@ public class AppUser {
     private String username;
     @Temporal(TemporalType.DATE)
     private Date registrationDate;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 
 
     public AppUser(String email, String password, String username, Date registrationDate) {
