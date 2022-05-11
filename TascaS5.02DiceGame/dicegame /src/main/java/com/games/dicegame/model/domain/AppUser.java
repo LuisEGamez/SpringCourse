@@ -33,6 +33,10 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Collection<Game> games = new ArrayList<>();
+
 
     public AppUser(String email, String password, String username, Date registrationDate) {
         this.email = email;
