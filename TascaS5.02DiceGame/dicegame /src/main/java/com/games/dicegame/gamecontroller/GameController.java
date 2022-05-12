@@ -2,7 +2,6 @@ package com.games.dicegame.gamecontroller;
 
 
 import com.games.dicegame.model.domain.Game;
-import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
