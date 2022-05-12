@@ -99,11 +99,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public Role saveRole(Role role) {
+        log.info("Saving new role {} to the database", role.getName());
         return roleRepository.save(role);
     }
 
     @Override
     public void addRoleToUser(String email, String roleName) {
+
+        log.info("Adding role {} to user {}", roleName, email);
 
         AppUser appUser = appUserRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
@@ -127,7 +130,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
             appUser.getGames().add(game);
 
         }
-        
+
         return game;
     }
 

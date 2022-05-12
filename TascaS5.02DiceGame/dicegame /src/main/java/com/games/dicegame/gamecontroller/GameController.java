@@ -48,4 +48,11 @@ public class GameController {
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+
+
+        return new ResponseEntity<>("HOLA", HttpStatus.OK);
+    }
+
 }
