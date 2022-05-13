@@ -71,29 +71,31 @@ public class UserServiceImp implements UserService, UserDetailsService {
         AppUser appUser;
         AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
 
+        if(!appUserRepository.existsByEmail(appUserDto.getEmail())){
 
-            if(( !appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS") )&&
-                    (!appUserRepository.existsByUsername(appUserDto.getUsername())) &&
-                        (!appUserRepository.existsByEmail(appUserDto.getEmail())) ){
+            if((!appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) && (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
 
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
-                                                                        passwordEncoder.encode(appUserDto.getPassword()),
-                                                                        appUserDto.getUsername(),
-                                                                        appUserDto.getRegistrationDate()));
+                        passwordEncoder.encode(appUserDto.getPassword()),
+                        appUserDto.getUsername(),
+                        appUserDto.getRegistrationDate()));
 
                 addRoleToUser(appUser.getEmail(), "ROLE_USER");
                 appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                                                appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles());
+                        appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles());
 
-            } else if ( (appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) && (!appUserRepository.existsByEmail(appUserDto.getEmail())) ) {
+            } else if ( (appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS"))) {
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
-                                                                        passwordEncoder.encode(appUserDto.getPassword()),
-                                                                        appUserDto.getUsername(),
-                                                                        appUserDto.getRegistrationDate()));
+                        passwordEncoder.encode(appUserDto.getPassword()),
+                        appUserDto.getUsername(),
+                        appUserDto.getRegistrationDate()));
                 addRoleToUser(appUser.getEmail(), "ROLE_USER");
                 appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                                                appUser.getUsername(), appUser.getRegistrationDate(), appUser.getRoles());
+                        appUser.getUsername(), appUser.getRegistrationDate(), appUser.getRoles());
             }
+
+        }
+
 
         return appUserDto;
     }
@@ -116,18 +118,24 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public AppUserDto updateUser(AppUserInfo appUserInfo) {
+    public AppUserDto updateUser(Integer id, AppUserInfo appUserInfo) {
 
-        AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), null, appUserInfo.getUsername());
-        AppUser appUser = null;
+        AppUserDto appUserDto = new AppUserDto(null, null, appUserInfo.getUsername());
+        Optional<AppUser> appUserData = null;
+        AppUser appUser;
 
-        if(appUserRepository.existsByEmail(appUserDto.getEmail())){
+        if(appUserRepository.existsById(id)){
 
-            appUserRepository.updateUser(appUserDto.getUsername(), appUserDto.getEmail());
+            appUserRepository.updateUser(appUserDto.getUsername(), id);
 
-            appUser = appUserRepository.findByEmail(appUserDto.getEmail());
+            appUserData = appUserRepository.findById(id);
 
-            appUserDto.setUsername(appUser.getUsername());
+            if(appUserData.isPresent()){
+                appUser = appUserData.get();
+                appUserDto.setUsername(appUser.getUsername());
+            }
+
+
 
         }
 

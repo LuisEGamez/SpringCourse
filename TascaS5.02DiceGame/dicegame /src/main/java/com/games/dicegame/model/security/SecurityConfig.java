@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable(); // Disable a Cross Site Request Forgery
         http.sessionManagement().sessionCreationPolicy(STATELESS); // No session will be created or used by Spring Security.
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/login/**").permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterAfter(new CustomAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
         http.authorizeRequests().antMatchers(POST, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t

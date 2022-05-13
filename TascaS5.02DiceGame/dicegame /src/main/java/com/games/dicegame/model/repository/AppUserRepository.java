@@ -14,8 +14,8 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
     boolean existsByEmail(String email);
 
     @Modifying
-    @Query("UPDATE users SET username = ?1 WHERE email = ?2")
-    void updateUser(String username, String email );
+    @Query("UPDATE users SET username = ?1 WHERE id = ?2")
+    void updateUser(String username, Integer id );
 
     List<AppUser> findAllByOrderBySuccessRateDesc();
 

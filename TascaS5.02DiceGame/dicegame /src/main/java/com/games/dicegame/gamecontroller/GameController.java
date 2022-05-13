@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -25,14 +26,19 @@ public class GameController {
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserInfo appUserInfo){
 
         ResponseEntity<AppUserDto> response;
-        AppUserDto appUserDto = userService.saveUser(appUserInfo);
 
-        if(appUserDto.getId()==null){
-            response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }else {
-            response = new ResponseEntity<>(appUserDto, HttpStatus.CREATED);
+        try{
+
+            AppUserDto appUserDto = userService.saveUser(appUserInfo);
+
+            if(appUserDto.getId()==null){
+                response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }else {
+                response = new ResponseEntity<>(appUserDto, HttpStatus.CREATED);
+            }
+        }catch (Exception e){
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return response;
     }
 
@@ -48,7 +54,10 @@ public class GameController {
     public ResponseEntity<AppUserDto> updateUser(@PathVariable("id") Integer id, @RequestBody AppUserInfo appUserInfo){
 
         ResponseEntity<AppUserDto> response;
-        AppUserDto appUserDto = userService.updateUser(appUserInfo);
+
+        AppUserDto appUserDto = userService.updateUser(id, appUserInfo);
+
+
 
         return new ResponseEntity<>(appUserDto, HttpStatus.OK);
     }

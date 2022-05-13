@@ -21,6 +21,7 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty
     @Email
     @Column(unique = true)
     private String email;

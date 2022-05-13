@@ -23,7 +23,7 @@ public interface UserService {
 
     List<AppUserDto> getUsers();
 
-    AppUserDto updateUser(AppUserInfo appUserInfo);
+    AppUserDto updateUser(Integer id, AppUserInfo appUserInfo);
 
     Collection<Game> getGames(Integer id);
 
