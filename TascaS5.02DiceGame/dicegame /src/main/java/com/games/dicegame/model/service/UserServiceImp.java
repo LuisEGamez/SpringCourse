@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -115,25 +116,92 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
+    public AppUserDto updateUser(AppUserInfo appUserInfo) {
+
+        AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), null, appUserInfo.getUsername());
+        AppUser appUser = null;
+
+        if(appUserRepository.existsByEmail(appUserDto.getEmail())){
+
+            appUserRepository.updateUser(appUserDto.getUsername(), appUserDto.getEmail());
+
+            appUser = appUserRepository.findByEmail(appUserDto.getEmail());
+
+            appUserDto.setUsername(appUser.getUsername());
+
+        }
+
+        return appUserDto;
+    }
+
+
+    @Override
     public Game play(Integer id) {
 
         Game game = null;
         AppUser appUser = null;
+        AppUserDto appUserDto = null;
         Optional<AppUser> appUserData = appUserRepository.findById(id);
 
         if (appUserData.isPresent()){
 
             game = gameRepository.save(new Game());
-
             appUser = appUserData.get();
-
             appUser.getGames().add(game);
-
+            appUserDto = new AppUserDto(appUser);
+            appUser.setSuccessRate(appUserDto.getSuccessRate());
         }
 
         return game;
     }
 
+    @Override
+    public void deleteGames(Integer id) {
 
+        gameRepository.deleteByIdPlayer(id);
+    }
+
+    @Override
+    public List<AppUserDto> getUsers() {
+
+        List<AppUser> users;
+        List<AppUserDto> usersDto = new ArrayList<>();
+
+        users = appUserRepository.findAll();
+
+        for(AppUser appUser: users){
+            usersDto.add(new AppUserDto(appUser));
+        }
+        return usersDto;
+    }
+
+    @Override
+    public Collection<Game> getGames(Integer id) {
+
+        AppUser appUser;
+        Optional<AppUser> appUserData = appUserRepository.findById(id);
+        Collection<Game> games = null;
+
+        if(appUserData.isPresent()){
+
+            appUser = appUserData.get();
+            games = appUser.getGames();
+        }
+
+        return games;
+    }
+
+    @Override
+    public List<AppUserDto> getRanking() {
+        List<AppUser> users;
+        List<AppUserDto> usersDto = new ArrayList<>();
+
+        users = appUserRepository.findAllByOrderBySuccessRateDesc();
+
+        for(AppUser appUser: users){
+            usersDto.add(new AppUserDto(appUser));
+        }
+        return usersDto;
+    }
 
 }

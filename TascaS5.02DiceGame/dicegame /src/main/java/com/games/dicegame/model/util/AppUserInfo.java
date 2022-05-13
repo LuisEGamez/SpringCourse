@@ -12,5 +12,4 @@ public class AppUserInfo {
     private String email;
     private String password;
     private String username;
-
 }

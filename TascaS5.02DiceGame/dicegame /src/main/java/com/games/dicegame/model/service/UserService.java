@@ -5,6 +5,7 @@ import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.util.AppUserInfo;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserService {
@@ -18,4 +19,13 @@ public interface UserService {
 
     Game play(Integer id);
 
+    void deleteGames(Integer id);
+
+    List<AppUserDto> getUsers();
+
+    AppUserDto updateUser(AppUserInfo appUserInfo);
+
+    Collection<Game> getGames(Integer id);
+
+    List<AppUserDto> getRanking();
 }

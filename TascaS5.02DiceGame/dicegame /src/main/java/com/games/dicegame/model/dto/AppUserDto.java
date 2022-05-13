@@ -1,26 +1,28 @@
 package com.games.dicegame.model.dto;
 
+import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.domain.Role;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Data
 public class AppUserDto implements Serializable {
-    private final Integer id;
+    private Integer id;
     @Email
-    private final String email;
+    private String email;
     @NotEmpty
-    private final String password;
-    private final String username;
-    private final Date registrationDate;
+    private String password;
+    private String username;
+    private Date registrationDate;
+
+    private double successRate;
 
     private Collection<Role> roles = new ArrayList<>();
 
@@ -49,5 +51,42 @@ public class AppUserDto implements Serializable {
         }
         this.registrationDate = registrationDate;
         this.roles = roles;
+    }
+
+    public AppUserDto(Integer id, String email, String password, String username, Date registrationDate, Collection<Role> roles, Collection<Game> games) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.registrationDate = registrationDate;
+        this.roles = roles;
+        this.games = games;
+        successRate = calculateRate(this.games);
+    }
+
+    public AppUserDto(AppUser appUser) {
+        id = appUser.getId();
+        email = appUser.getEmail();
+        password = appUser.getPassword();
+        username = appUser.getUsername();
+        registrationDate = appUser.getRegistrationDate();
+        roles = appUser.getRoles();
+        games = appUser.getGames();
+        successRate = calculateRate(this.games);
+    }
+
+    public double calculateRate(Collection<Game> games){
+
+        double totalGames = games.size();
+        int winGames = 0;
+
+        for (Game game: games) {
+            if(game.getResult().equalsIgnoreCase("WIN")){
+                winGames++;
+            }
+        }
+        return (winGames/totalGames)*100;
+
+
     }
 }

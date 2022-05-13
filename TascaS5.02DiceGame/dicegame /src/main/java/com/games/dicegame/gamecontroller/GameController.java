@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class GameController {
@@ -41,6 +44,15 @@ public class GameController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/players/{id}")
+    public ResponseEntity<AppUserDto> updateUser(@PathVariable("id") Integer id, @RequestBody AppUserInfo appUserInfo){
+
+        ResponseEntity<AppUserDto> response;
+        AppUserDto appUserDto = userService.updateUser(appUserInfo);
+
+        return new ResponseEntity<>(appUserDto, HttpStatus.OK);
+    }
+
     @PostMapping("/players/{id}/games")
     public ResponseEntity<Game> play(@PathVariable("id") Integer id){
 
@@ -48,11 +60,35 @@ public class GameController {
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(){
+    @DeleteMapping("/players/{id}/games")
+    public ResponseEntity<HttpStatus> deleteGames(@PathVariable("id") Integer id){
 
+        userService.deleteGames(id);
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+    }
 
-        return new ResponseEntity<>("HOLA", HttpStatus.OK);
+    @GetMapping("/players")
+    public ResponseEntity<List<AppUserDto>> getUsers(){
+
+        List<AppUserDto> users = userService.getUsers();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/players/{id}/games")
+    public ResponseEntity<Collection<Game>> getGames(@PathVariable("id") Integer id){
+
+        Collection<Game> games = userService.getGames(id);
+
+        return new ResponseEntity<>(games, HttpStatus.OK);
+    }
+
+    @GetMapping("/players/ranking")
+    public ResponseEntity<List<AppUserDto>> getRanking(){
+
+        List<AppUserDto> users = userService.getRanking();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

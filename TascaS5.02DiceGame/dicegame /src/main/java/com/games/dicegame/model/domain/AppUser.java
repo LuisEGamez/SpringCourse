@@ -27,6 +27,7 @@ public class AppUser {
     @NotEmpty
     private String password;
     private String username;
+
     @Temporal(TemporalType.DATE)
     private Date registrationDate;
 
@@ -36,6 +37,9 @@ public class AppUser {
     @OneToMany
     @JoinColumn(name = "user_id")
     private Collection<Game> games = new ArrayList<>();
+
+    @Column(name = "successrate")
+    private double successRate;
 
 
     public AppUser(String email, String password, String username, Date registrationDate) {
