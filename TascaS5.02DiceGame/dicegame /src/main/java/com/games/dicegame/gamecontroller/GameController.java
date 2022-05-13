@@ -91,4 +91,20 @@ public class GameController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping("/players/ranking/loser")
+    public ResponseEntity<AppUserDto> getLoser(){
+
+        AppUserDto users = userService.getLoser();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/players/ranking/winner")
+    public ResponseEntity<AppUserDto> getWinner(){
+
+        AppUserDto users = userService.getWinner();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 }

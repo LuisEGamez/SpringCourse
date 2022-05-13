@@ -18,4 +18,8 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
     void updateUser(String username, String email );
 
     List<AppUser> findAllByOrderBySuccessRateDesc();
+
+    AppUser findFirstByOrderBySuccessRateAsc();
+
+    AppUser findFirstByOrderBySuccessRateDesc();
 }

@@ -28,4 +28,8 @@ public interface UserService {
     Collection<Game> getGames(Integer id);
 
     List<AppUserDto> getRanking();
+
+    AppUserDto getLoser();
+
+    AppUserDto getWinner();
 }
