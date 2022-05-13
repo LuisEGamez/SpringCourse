@@ -60,7 +60,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // you decrypt it ang them pass it in here from some utility class.
         String access_token = JWT.create()
                                     .withSubject(userDetailsCustom.getUsername()) // Subject can be really any string that you so  that can be like the user id or username or something unique
-                                                                                    // about the user so that you can identify the user by that specific token
+                                                                                    // about the user so that you can identify the user by that specific token.
                                     .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) // 10 min to expire the token
                                     .withIssuer(request.getRequestURL().toString()) // We pass the issuer(Emisor) from request
                                     .withClaim("user_id",userDetailsCustom.getId())

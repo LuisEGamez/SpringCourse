@@ -3,6 +3,7 @@ package com.games.dicegame.model.security;
 
 import com.games.dicegame.model.filter.CustomAuthenticationFilter;
 import com.games.dicegame.model.filter.CustomAuthorizationFilter;
+import com.games.dicegame.model.service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +12,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 
@@ -26,10 +25,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.*;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserServiceImp userDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     /*
      * We tell Spring how we want to do the authentication.
@@ -52,8 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS); // No session will be created or used by Spring Security.
         http.authorizeRequests().antMatchers("/api/login/**").permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
-        http.authorizeRequests().antMatchers(POST, "/api/players/{id}/games/**").hasAnyAuthority("ROLE_ADMIN");
+        http.addFilterAfter(new CustomAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
+        http.authorizeRequests().antMatchers(POST, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
+        http.authorizeRequests().antMatchers(POST, "/api/players").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
 
 
