@@ -120,11 +120,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public AppUserDto updateUser(Integer id, AppUserInfo appUserInfo) {
 
-        AppUserDto appUserDto = new AppUserDto(null, null, appUserInfo.getUsername());
-        Optional<AppUser> appUserData = null;
+        AppUserDto appUserDto = null;
+        Optional<AppUser> appUserData;
         AppUser appUser;
 
-        if(appUserRepository.existsById(id)){
+        if(appUserRepository.existsById(id) && appUserInfo.getUsername()!= null){
+
+            appUserDto = new AppUserDto(null, null, appUserInfo.getUsername());
 
             appUserRepository.updateUser(appUserDto.getUsername(), id);
 
@@ -134,8 +136,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
                 appUser = appUserData.get();
                 appUserDto.setUsername(appUser.getUsername());
             }
-
-
 
         }
 

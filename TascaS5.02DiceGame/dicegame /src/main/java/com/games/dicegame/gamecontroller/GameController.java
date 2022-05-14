@@ -55,18 +55,37 @@ public class GameController {
 
         ResponseEntity<AppUserDto> response;
 
-        AppUserDto appUserDto = userService.updateUser(id, appUserInfo);
+        try {
+            AppUserDto appUserDto = userService.updateUser(id, appUserInfo);
+            if(appUserDto == null){
 
+                response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }else {
 
+                response = new ResponseEntity<>(appUserDto, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return new ResponseEntity<>(appUserDto, HttpStatus.OK);
+        return response;
     }
 
     @PostMapping("/players/{id}/games")
-    public ResponseEntity<Game> play(@PathVariable("id") Integer id){
+    public ResponseEntity<Game> play (@PathVariable("id") Integer id){
 
-        Game game = userService.play(id);
-        return new ResponseEntity<>(game, HttpStatus.OK);
+        ResponseEntity<Game> response;
+        try {
+            Game game = userService.play(id);
+            if(game == null){
+                response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }else {
+                response = new ResponseEntity<>(game ,HttpStatus.OK);
+            }
+        }catch (Exception e){
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
     }
 
     @DeleteMapping("/players/{id}/games")
