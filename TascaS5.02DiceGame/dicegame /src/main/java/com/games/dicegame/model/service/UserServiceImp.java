@@ -214,16 +214,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public AppUserDto getLoser() {
-
         AppUser appUser = appUserRepository.findFirstByOrderBySuccessRateAsc();
-
         return new AppUserDto(appUser);
     }
 
     @Override
     public AppUserDto getWinner() {
         AppUser appUser = appUserRepository.findFirstByOrderBySuccessRateDesc();
-
         return new AppUserDto(appUser);
     }
 
