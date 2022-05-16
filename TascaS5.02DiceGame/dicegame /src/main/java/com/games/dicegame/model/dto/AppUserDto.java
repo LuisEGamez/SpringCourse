@@ -22,7 +22,7 @@ public class AppUserDto implements Serializable {
     private String username;
     private Date registrationDate;
 
-    private double successRate;
+    private double successRate = 0;
 
     private Collection<Role> roles = new ArrayList<>();
 
@@ -77,15 +77,23 @@ public class AppUserDto implements Serializable {
 
     public double calculateRate(Collection<Game> games){
 
-        double totalGames = games.size();
+        double totalGames;
         int winGames = 0;
+        double result = 0;
 
-        for (Game game: games) {
-            if(game.getResult().equalsIgnoreCase("WIN")){
-                winGames++;
+
+        if(!games.isEmpty()){
+            totalGames = games.size();
+            for (Game game: games) {
+                if(game.getResult().equalsIgnoreCase("WIN")){
+                    winGames++;
+                }
             }
+            result = (winGames/totalGames)*100;
         }
-        return (winGames/totalGames)*100;
+
+
+        return result;
 
 
     }
