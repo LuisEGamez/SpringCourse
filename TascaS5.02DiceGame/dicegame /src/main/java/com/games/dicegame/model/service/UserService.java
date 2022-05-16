@@ -10,22 +10,15 @@ import java.util.List;
 
 public interface UserService {
 
-
     AppUserDto saveUser(AppUserInfo appUserInfo);
 
     Role saveRole(Role role);
 
     void addRoleToUser(String email, String roleName);
 
-    Game play(Integer id);
-
-    void deleteGames(Integer id);
-
     List<AppUserDto> getUsers();
 
     AppUserDto updateUser(Integer id, AppUserInfo appUserInfo);
-
-    Collection<Game> getGames(Integer id);
 
     List<AppUserDto> getRanking();
 

@@ -1,6 +1,7 @@
 package com.games.dicegame.model.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Game {
 
     @Id
@@ -20,14 +22,10 @@ public class Game {
     private double total;
     private String result;
 
-    public Game() {
-        dice1 = Math.floor(Math.random()*(6-1+1)+1);
-        dice2 = Math.floor(Math.random()*(6-1+1)+1);
-        total = dice1 + dice2;
-        if( total == 7){
-            result = "WIN";
-        }else {
-            result = "LOSE";
-        }
+    public Game(double dice1, double dice2, double total, String result) {
+        this.dice1 = dice1;
+        this.dice2 = dice2;
+        this.total = total;
+        this.result = result;
     }
 }

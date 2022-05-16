@@ -3,10 +3,12 @@ package com.games.dicegame.gamecontroller;
 
 import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.dto.AppUserDto;
+import com.games.dicegame.model.service.GameService;
 import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
 import com.games.dicegame.model.util.AppUserShowInfo;
 import com.games.dicegame.model.util.RoleToUserForm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,14 @@ import java.util.Map;
 @RequestMapping("/api")
 public class GameController {
 
-    @Autowired
     private UserService userService;
+
+    private GameService gameService;
+
+    public GameController(UserService userService, GameService gameService) {
+        this.userService = userService;
+        this.gameService = gameService;
+    }
 
     @PostMapping("/players")
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserInfo appUserInfo){
@@ -80,7 +88,7 @@ public class GameController {
         ResponseEntity<Game> response;
         Game game;
         try {
-            game = userService.play(id);
+            game = gameService.play(id);
             if(game == null){
                 response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }else {
@@ -98,7 +106,7 @@ public class GameController {
         ResponseEntity<HttpStatus> response;
 
         try {
-            userService.deleteGames(id);
+            gameService.deleteGames(id);
             response = new ResponseEntity<>( HttpStatus.NO_CONTENT);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -127,7 +135,7 @@ public class GameController {
 
         ResponseEntity<Collection<Game>> response;
         try {
-            Collection<Game> games = userService.getGames(id);
+            Collection<Game> games = gameService.getGames(id);
             if(games == null){
                 response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }else {

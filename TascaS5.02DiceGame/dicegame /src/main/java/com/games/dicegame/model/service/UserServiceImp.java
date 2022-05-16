@@ -9,6 +9,9 @@ import com.games.dicegame.model.repository.GameRepository;
 import com.games.dicegame.model.repository.RoleRepository;
 import com.games.dicegame.model.security.UserDetailsCustom;
 import com.games.dicegame.model.util.AppUserInfo;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,17 +30,12 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
+@AllArgsConstructor
 public class UserServiceImp implements UserService, UserDetailsService {
-    @Autowired
     private AppUserRepository appUserRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
     private GameRepository gameRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder; // We need encoder the password before to save in the database.
 
     /*
@@ -142,44 +140,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return appUserDto;
     }
 
-
-    @Override
-    public Game play(Integer id) {
-
-        Game game = null;
-        AppUser appUser = null;
-        AppUserDto appUserDto = null;
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-
-        if (appUserData.isPresent()){
-
-            game = gameRepository.save(new Game());
-            appUser = appUserData.get();
-            appUser.getGames().add(game);
-            appUserDto = new AppUserDto(appUser);
-            appUser.setSuccessRate(appUserDto.getSuccessRate());
-        }
-
-        return game;
-    }
-
-    @Override
-    public void deleteGames(Integer id) {
-        AppUser appUser = null;
-        AppUserDto appUserDto = null;
-        gameRepository.deleteByIdPlayer(id);
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-
-        if(appUserData.isPresent()){
-
-            appUser = appUserData.get();
-            appUserDto = new AppUserDto(appUser);
-            appUser.setSuccessRate(appUserDto.getSuccessRate());
-
-
-        }
-    }
-
     @Override
     public List<AppUserDto> getUsers() {
 
@@ -192,22 +152,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
             usersDto.add(new AppUserDto(appUser));
         }
         return usersDto;
-    }
-
-    @Override
-    public Collection<Game> getGames(Integer id) {
-
-        AppUser appUser;
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-        Collection<Game> games = null;
-
-        if(appUserData.isPresent()){
-
-            appUser = appUserData.get();
-            games = appUser.getGames();
-        }
-
-        return games;
     }
 
     @Override

@@ -2,7 +2,10 @@ package com.games.dicegame;
 
 import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Role;
+import com.games.dicegame.model.service.GameService;
+import com.games.dicegame.model.service.GameServiceImp;
 import com.games.dicegame.model.service.UserService;
+import com.games.dicegame.model.service.UserServiceImp;
 import com.games.dicegame.model.util.AppUserInfo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,13 +23,6 @@ public class DiceGameApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DiceGameApplication.class, args);
 	}
-
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
-
-
 
 	/*@Bean
 	CommandLineRunner runner(UserService userService){
