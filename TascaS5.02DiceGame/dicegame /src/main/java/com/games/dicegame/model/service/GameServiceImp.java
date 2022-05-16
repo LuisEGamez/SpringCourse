@@ -6,8 +6,6 @@ import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
 import com.games.dicegame.model.repository.GameRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,29 +24,37 @@ public class GameServiceImp implements GameService{
     @Override
     public Game play(Integer id) {
         Game game = null;
-        AppUser appUser;
-        AppUserDto appUserDto ;
+
         Optional<AppUser> appUserData = appUserRepository.findById(id);
 
         if (appUserData.isPresent()){
 
-            game = gameRepository.save(startGame());
-            appUser = appUserData.get();
-            appUser.getGames().add(game);
-            appUserDto = new AppUserDto(appUser);
-            appUser.setSuccessRate(appUserDto.getSuccessRate());
+            game = gameRepository.save(startGame(randomNumber(), randomNumber()));
+            updateUserGame(game, id);
         }
 
         return game;
     }
 
-    @Override
-    public Game startGame() {
+    public void updateUserGame(Game game, Integer id){
+        AppUser appUser;
+        AppUserDto appUserDto ;
+        Optional<AppUser> appUserData = appUserRepository.findById(id);
+        if (appUserData.isPresent()){
+            appUser = appUserData.get();
+            appUser.getGames().add(game);
+            appUserDto = new AppUserDto(appUser);
+            appUser.setSuccessRate(appUserDto.getSuccessRate());
+            appUserRepository.save(appUser);
 
-        double dice1, dice2, total;
+        }
+
+    }
+
+    public Game startGame(double dice1, double dice2) {
+
+        double total;
         String result;
-        dice1 = Math.floor(Math.random()*(6-1+1)+1);
-        dice2 = Math.floor(Math.random()*(6-1+1)+1);
         total = dice1 + dice2;
         if( total == 7){
             result = "WIN";
@@ -56,6 +62,11 @@ public class GameServiceImp implements GameService{
             result = "LOSE";
         }
         return new Game(dice1, dice2, total, result);
+    }
+
+    private double randomNumber(){
+
+        return Math.floor(Math.random()*(6-1+1)+1);
     }
 
     @Override

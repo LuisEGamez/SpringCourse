@@ -14,6 +14,6 @@ public interface GameService {
 
     Collection<Game> getGames(Integer id);
 
-    Game startGame();
+    Game startGame(double dice1, double dice2);
 
 }
