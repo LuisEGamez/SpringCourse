@@ -17,9 +17,9 @@ import java.util.Collection;
 @Setter
 public class UserDetailsCustom extends User {
 
-    private final Integer id;
+    private final String id;
 
-    public UserDetailsCustom(Integer id ,String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsCustom(String id ,String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
 
         this.id = id;

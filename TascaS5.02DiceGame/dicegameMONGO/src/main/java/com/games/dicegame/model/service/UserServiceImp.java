@@ -2,11 +2,8 @@ package com.games.dicegame.model.service;
 
 import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Game;
-import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
-import com.games.dicegame.model.repository.GameRepository;
-import com.games.dicegame.model.repository.RoleRepository;
 import com.games.dicegame.model.security.UserDetailsCustom;
 import com.games.dicegame.model.util.AppUserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +29,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private AppUserRepository appUserRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder; // We need encoder the password before to save in the database.
 
     /*
@@ -58,7 +49,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         appUser.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName())); // How Spring Security doesn't know to handle roles
+            authorities.add(new SimpleGrantedAuthority(role)); // How Spring Security doesn't know to handle roles
                                                                             // We need convert this roles in SimpleGrantedAuthority that extend of GrantedAuthorities
         });
 
@@ -100,11 +91,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return appUserDto;
     }
 
-    @Override
-    public Role saveRole(Role role) {
-        log.info("Saving new role {} to the database", role.getName());
-        return roleRepository.save(role);
-    }
 
     @Override
     public void addRoleToUser(String email, String roleName) {
@@ -112,13 +98,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
         log.info("Adding role {} to user {}", roleName, email);
 
         AppUser appUser = appUserRepository.findByEmail(email);
-        Role role = roleRepository.findByName(roleName);
-        appUser.getRoles().add(role);
+        appUser.getRoles().add(roleName);
+        appUserRepository.save(appUser);
 
     }
 
     @Override
-    public AppUserDto updateUser(Integer id, AppUserInfo appUserInfo) {
+    public AppUserDto updateUser(String id, AppUserInfo appUserInfo) {
 
         AppUserDto appUserDto = null;
         Optional<AppUser> appUserData;
@@ -128,15 +114,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
             appUserDto = new AppUserDto(null, null, appUserInfo.getUsername());
 
-            appUserRepository.updateUser(appUserDto.getUsername(), id);
-
-            appUserData = appUserRepository.findById(id);
+            appUserData =  appUserRepository.findById(id);
 
             if(appUserData.isPresent()){
                 appUser = appUserData.get();
-                appUserDto.setUsername(appUser.getUsername());
+                appUser.setUsername(appUserDto.getUsername());
+                appUserRepository.save(appUser);
             }
-
         }
 
         return appUserDto;
@@ -144,7 +128,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public Game play(Integer id) {
+    public Game play(String id) {
 
         Game game = null;
         AppUser appUser = null;
@@ -153,20 +137,35 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if (appUserData.isPresent()){
 
-            game = gameRepository.save(new Game());
+            game = new Game();
             appUser = appUserData.get();
             appUser.getGames().add(game);
             appUserDto = new AppUserDto(appUser);
             appUser.setSuccessRate(appUserDto.getSuccessRate());
+            appUserRepository.save(appUser);
         }
 
         return game;
     }
 
     @Override
-    public void deleteGames(Integer id) {
+    public void deleteGames(String id) {
 
-        gameRepository.deleteByIdPlayer(id);
+        Optional<AppUser> appUserData = appUserRepository.findById(id);
+        AppUser appUser;
+        AppUserDto appUserDto = null;
+        Collection<Game> games;
+
+        if (appUserData.isPresent()){
+            appUser = appUserData.get();
+            games = appUser.getGames();
+            games.clear();
+            appUser.setGames(games);
+            appUserDto = new AppUserDto(appUser);
+            appUser.setSuccessRate(appUserDto.getSuccessRate());
+            appUserRepository.save(appUser);
+        }
+
     }
 
     @Override
@@ -184,7 +183,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public Collection<Game> getGames(Integer id) {
+    public Collection<Game> getGames(String id) {
 
         AppUser appUser;
         Optional<AppUser> appUserData = appUserRepository.findById(id);

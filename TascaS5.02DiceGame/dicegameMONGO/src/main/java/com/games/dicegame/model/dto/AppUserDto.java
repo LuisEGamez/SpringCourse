@@ -2,10 +2,8 @@ package com.games.dicegame.model.dto;
 
 import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Game;
-import com.games.dicegame.model.domain.Role;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,7 +12,7 @@ import java.util.*;
 
 @Data
 public class AppUserDto implements Serializable {
-    private Integer id;
+    private String id;
     @Email
     private String email;
     @NotEmpty
@@ -24,7 +22,7 @@ public class AppUserDto implements Serializable {
 
     private double successRate;
 
-    private Collection<Role> roles = new ArrayList<>();
+    private Collection<String> roles = new ArrayList<>();
 
     private Collection<Game> games = new ArrayList<>();
 
@@ -40,7 +38,7 @@ public class AppUserDto implements Serializable {
         this.registrationDate = Calendar.getInstance().getTime();
     }
 
-    public AppUserDto(Integer id, String mail, String password, String username, Date registrationDate, Collection<Role> roles) {
+    public AppUserDto(String id, String mail, String password, String username, Date registrationDate, Collection<String> roles) {
         this.id = id;
         this.email = mail;
         this.password = password;
@@ -53,7 +51,7 @@ public class AppUserDto implements Serializable {
         this.roles = roles;
     }
 
-    public AppUserDto(Integer id, String email, String password, String username, Date registrationDate, Collection<Role> roles, Collection<Game> games) {
+    public AppUserDto(String id, String email, String password, String username, Date registrationDate, Collection<String> roles, Collection<Game> games) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -77,15 +75,23 @@ public class AppUserDto implements Serializable {
 
     public double calculateRate(Collection<Game> games){
 
-        double totalGames = games.size();
+        double totalGames;
         int winGames = 0;
+        double result = 0;
 
-        for (Game game: games) {
-            if(game.getResult().equalsIgnoreCase("WIN")){
-                winGames++;
+
+        if(!games.isEmpty()){
+            totalGames = games.size();
+            for (Game game: games) {
+                if(game.getResult().equalsIgnoreCase("WIN")){
+                    winGames++;
+                }
             }
+            result = (winGames/totalGames)*100;
         }
-        return (winGames/totalGames)*100;
+
+
+        return result;
 
 
     }

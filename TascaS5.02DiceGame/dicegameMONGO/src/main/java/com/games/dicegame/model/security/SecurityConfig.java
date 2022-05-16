@@ -55,8 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterAfter(new CustomAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
         http.authorizeRequests().antMatchers(POST, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
         http.authorizeRequests().antMatchers(DELETE, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
+        http.authorizeRequests().antMatchers(GET, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
         http.authorizeRequests().antMatchers(POST, "/api/players").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
 
 
     }

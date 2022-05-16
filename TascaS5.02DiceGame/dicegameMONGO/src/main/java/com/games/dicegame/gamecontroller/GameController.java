@@ -40,6 +40,7 @@ public class GameController {
             }
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
         }
         return response;
     }
@@ -53,7 +54,7 @@ public class GameController {
     }
 
     @PutMapping("/players/{id}")
-    public ResponseEntity<AppUserDto> updateUser(@PathVariable("id") Integer id, @RequestBody AppUserInfo appUserInfo){
+    public ResponseEntity<AppUserDto> updateUser(@PathVariable("id") String id, @RequestBody AppUserInfo appUserInfo){
 
         ResponseEntity<AppUserDto> response;
         AppUserDto appUserDto;
@@ -75,7 +76,7 @@ public class GameController {
     }
 
     @PostMapping("/players/{id}/games")
-    public ResponseEntity<Game> play (@PathVariable("id") Integer id){
+    public ResponseEntity<Game> play (@PathVariable("id") String id){
 
         ResponseEntity<Game> response;
         Game game;
@@ -93,7 +94,7 @@ public class GameController {
     }
 
     @DeleteMapping("/players/{id}/games")
-    public ResponseEntity<HttpStatus> deleteGames(@PathVariable("id") Integer id){
+    public ResponseEntity<HttpStatus> deleteGames(@PathVariable("id") String id){
 
         ResponseEntity<HttpStatus> response;
 
@@ -123,7 +124,7 @@ public class GameController {
     }
 
     @GetMapping("/players/{id}/games")
-    public ResponseEntity<Collection<Game>> getGames(@PathVariable("id") Integer id){
+    public ResponseEntity<Collection<Game>> getGames(@PathVariable("id") String id){
 
         ResponseEntity<Collection<Game>> response;
         try {

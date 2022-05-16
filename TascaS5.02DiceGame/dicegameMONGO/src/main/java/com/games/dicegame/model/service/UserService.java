@@ -1,7 +1,6 @@
 package com.games.dicegame.model.service;
 
 import com.games.dicegame.model.domain.Game;
-import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.util.AppUserInfo;
 
@@ -13,19 +12,17 @@ public interface UserService {
 
     AppUserDto saveUser(AppUserInfo appUserInfo);
 
-    Role saveRole(Role role);
-
     void addRoleToUser(String email, String roleName);
 
-    Game play(Integer id);
+    Game play(String id);
 
-    void deleteGames(Integer id);
+    void deleteGames(String id);
 
     List<AppUserDto> getUsers();
 
-    AppUserDto updateUser(Integer id, AppUserInfo appUserInfo);
+    AppUserDto updateUser(String id, AppUserInfo appUserInfo);
 
-    Collection<Game> getGames(Integer id);
+    Collection<Game> getGames(String id);
 
     List<AppUserDto> getRanking();
 

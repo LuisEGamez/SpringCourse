@@ -1,7 +1,6 @@
 package com.games.dicegame;
 
 import com.games.dicegame.model.domain.AppUser;
-import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
 import org.springframework.boot.CommandLineRunner;
@@ -34,8 +33,6 @@ public class DiceGameApplication {
 
 		return args -> {
 
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
 			userService.saveUser((new AppUserInfo("luis@gmail.com", "123456","Luis")));
 
