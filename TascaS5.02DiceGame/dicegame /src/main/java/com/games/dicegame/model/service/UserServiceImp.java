@@ -114,15 +114,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
             }
 
         }
-
-
         return appUserDto;
-    }
-
-    @Override
-    public Role saveRole(Role role) {
-        log.info("Saving new role {} to the database", role.getName());
-        return roleRepository.save(role);
     }
 
     @Override

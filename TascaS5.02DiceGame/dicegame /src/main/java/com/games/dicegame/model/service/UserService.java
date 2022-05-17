@@ -15,8 +15,6 @@ public interface UserService {
 
     AppUserDto findUserById(Integer id);
 
-    Role saveRole(Role role);
-
     void addRoleToUser(String email, String roleName);
 
     List<AppUserDto> getUsers();
