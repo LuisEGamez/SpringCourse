@@ -50,7 +50,7 @@ class GameServiceImpTest {
         /*Optional<AppUser> appUser = Optional.of(new AppUser());
         when(appUserRepository.findById(1)).thenReturn(appUser);*/
 
-        gameService.play(1);
+        gameService.play();
 
         verify(gameRepository).save(any());
     }

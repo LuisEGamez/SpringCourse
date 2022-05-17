@@ -22,7 +22,7 @@ public class GameServiceImp implements GameService{
 
 
     @Override
-    public Game play(Integer id) {
+    public Game play() {
         Game game;
         game = gameRepository.save(startGame(randomNumber(), randomNumber()));
         return game;
@@ -54,18 +54,9 @@ public class GameServiceImp implements GameService{
     }
 
     @Override
-    public Collection<Game> getGames(Integer id) {
-        AppUser appUser;
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-        Collection<Game> games = null;
+    public Collection<Game> getGames(AppUserDto appUserDto) {
 
-        if(appUserData.isPresent()){
-
-            appUser = appUserData.get();
-            games = appUser.getGames();
-        }
-
-        return games;
+        return appUserDto.getGames();
     }
 
 

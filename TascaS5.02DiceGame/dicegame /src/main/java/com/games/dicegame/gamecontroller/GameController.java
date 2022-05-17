@@ -89,7 +89,7 @@ public class GameController {
         try {
             appUserDto = userService.findUserById(id);
             if(appUserDto != null){
-                game = gameService.play(id);
+                game = gameService.play();
                 appUserDto.getGames().add(game);
                 userService.updateUserGames(appUserDto);
                 response = new ResponseEntity<>(game ,HttpStatus.OK);
@@ -145,12 +145,15 @@ public class GameController {
     public ResponseEntity<Collection<Game>> getGames(@PathVariable("id") Integer id){
 
         ResponseEntity<Collection<Game>> response;
+        AppUserDto appUserDto;
+        Collection<Game> games;
         try {
-            Collection<Game> games = gameService.getGames(id);
-            if(games == null){
-                response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }else {
+            appUserDto = userService.findUserById(id);
+            if(appUserDto != null){
+                games = gameService.getGames(appUserDto);
                 response = new ResponseEntity<>(games, HttpStatus.OK);
+            }else {
+                response = new ResponseEntity<>( HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
