@@ -29,5 +29,5 @@ public interface UserService {
 
     AppUserDto getWinner();
 
-    void updateUserGames(AppUserDto appUserDto, Game game);
+    void updateUserGames(AppUserDto appUserDto);
 }

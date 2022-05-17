@@ -109,6 +109,8 @@ public class AppUserDto implements Serializable {
                 }
             }
             successRate = (winGames/totalGames)*100;
+        }else{
+            successRate = 0;
         }
 
     }

@@ -201,9 +201,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateUserGames(AppUserDto appUserDto, Game game) {
+    public void updateUserGames(AppUserDto appUserDto) {
 
-        appUserDto.getGames().add(game);
         appUserDto.updateRate(appUserDto.getGames());
         AppUser appUser = appUserDtoToAppUser(appUserDto);
         appUserRepository.save(appUser);
