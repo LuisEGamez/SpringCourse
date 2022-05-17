@@ -48,19 +48,9 @@ public class GameServiceImp implements GameService{
 
     @Override
     public void deleteGames(Integer id) {
-        AppUser appUser;
-        AppUserDto appUserDto;
+
         gameRepository.deleteByIdPlayer(id);
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
 
-        if(appUserData.isPresent()){
-
-            appUser = appUserData.get();
-            appUserDto = new AppUserDto(appUser);
-            appUser.setSuccessRate(appUserDto.getSuccessRate());
-
-
-        }
     }
 
     @Override
