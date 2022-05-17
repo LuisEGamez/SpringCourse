@@ -54,5 +54,13 @@ class GameServiceImpTest {
 
         verify(gameRepository).save(any());
     }
+    
+    @Test
+    public void whenUserDeleteGameVerifyDeleteGameById(){
+
+        gameService.deleteGames(2);
+
+        verify(gameRepository).deleteByIdPlayer(2);
+    }
 
 }
