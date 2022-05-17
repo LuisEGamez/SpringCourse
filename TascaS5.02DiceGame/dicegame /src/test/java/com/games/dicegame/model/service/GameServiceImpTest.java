@@ -41,8 +41,8 @@ class GameServiceImpTest {
 
     @Test
     public void whenUserPlaysVerifyGameSave(){
-        Optional<AppUser> appUser = Optional.of(new AppUser());
-        when(appUserRepository.findById(1)).thenReturn(appUser);
+        /*Optional<AppUser> appUser = Optional.of(new AppUser());
+        when(appUserRepository.findById(1)).thenReturn(appUser);*/
 
         gameService.play(1);
 
