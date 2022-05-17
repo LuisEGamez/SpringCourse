@@ -63,6 +63,27 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return new UserDetailsCustom(appUser.getId(), appUser.getEmail(), appUser.getPassword(), authorities); // Return a valid user for Spring Security
     }
 
+    public AppUserDto findUserById(Integer id){
+
+        Optional<AppUser> appUserData;
+        AppUser appUser;
+        AppUserDto appUserDto = null;
+        appUserData = appUserRepository.findById(id);
+        if(appUserData.isPresent()){
+            appUser =  appUserData.get();
+            appUserDto = appUserToAppUserDto(appUser);
+        }
+        return appUserDto;
+    }
+
+    public AppUserDto appUserToAppUserDto(AppUser appUser){
+        return new AppUserDto(appUser);
+    }
+
+    public AppUser appUserDtoToAppUser(AppUserDto appUserDto){
+        return new AppUser(appUserDto);
+    }
+
     @Override
     public AppUserDto saveUser(AppUserInfo appUserInfo) {
 
@@ -177,6 +198,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public AppUserDto getWinner() {
         AppUser appUser = appUserRepository.findFirstByOrderBySuccessRateDesc();
         return new AppUserDto(appUser);
+    }
+
+    @Override
+    public void updateUserGames(AppUserDto appUserDto, Game game) {
+
+        appUserDto.getGames().add(game);
+        appUserDto.updateRate(appUserDto.getGames());
+        AppUser appUser = appUserDtoToAppUser(appUserDto);
+        appUserRepository.save(appUser);
     }
 
 }

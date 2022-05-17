@@ -2,6 +2,7 @@ package com.games.dicegame.model.domain;
 
 
 
+import com.games.dicegame.model.dto.AppUserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,4 +51,14 @@ public class AppUser {
         this.registrationDate = registrationDate;
     }
 
+    public AppUser(AppUserDto appUserDto) {
+        id = appUserDto.getId();
+        email = appUserDto.getEmail();
+        password = appUserDto.getPassword();
+        username = appUserDto.getUsername();
+        registrationDate = appUserDto.getRegistrationDate();
+        roles = appUserDto.getRoles();
+        games = appUserDto.getGames();
+        successRate = appUserDto.getSuccessRate();
+    }
 }

@@ -8,8 +8,6 @@ import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
 import com.games.dicegame.model.util.AppUserShowInfo;
 import com.games.dicegame.model.util.RoleToUserForm;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -87,12 +84,16 @@ public class GameController {
 
         ResponseEntity<Game> response;
         Game game;
+        AppUserDto appUserDto;
+
         try {
-            game = gameService.play(id);
-            if(game == null){
-                response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }else {
+            appUserDto = userService.findUserById(id);
+            if(appUserDto != null){
+                game = gameService.play(id);
+                userService.updateUserGames(appUserDto, game);
                 response = new ResponseEntity<>(game ,HttpStatus.OK);
+            }else {
+                response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -23,32 +23,9 @@ public class GameServiceImp implements GameService{
 
     @Override
     public Game play(Integer id) {
-        Game game = null;
-
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-
-        if (appUserData.isPresent()){
-
-            game = gameRepository.save(startGame(randomNumber(), randomNumber()));
-            updateUserGame(game, id);
-        }
-
+        Game game;
+        game = gameRepository.save(startGame(randomNumber(), randomNumber()));
         return game;
-    }
-
-    public void updateUserGame(Game game, Integer id){
-        AppUser appUser;
-        AppUserDto appUserDto ;
-        Optional<AppUser> appUserData = appUserRepository.findById(id);
-        if (appUserData.isPresent()){
-            appUser = appUserData.get();
-            appUser.getGames().add(game);
-            appUserDto = new AppUserDto(appUser);
-            appUser.setSuccessRate(appUserDto.getSuccessRate());
-            appUserRepository.save(appUser);
-
-        }
-
     }
 
     public Game startGame(double dice1, double dice2) {

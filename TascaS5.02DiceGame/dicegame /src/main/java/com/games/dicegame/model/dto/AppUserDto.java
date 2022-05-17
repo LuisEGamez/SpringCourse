@@ -92,9 +92,24 @@ public class AppUserDto implements Serializable {
             result = (winGames/totalGames)*100;
         }
 
-
         return result;
 
+    }
+
+    public void updateRate(Collection<Game> games){
+
+        double totalGames;
+        int winGames = 0;
+
+        if(!games.isEmpty()){
+            totalGames = games.size();
+            for (Game game: games) {
+                if(game.getResult().equalsIgnoreCase("WIN")){
+                    winGames++;
+                }
+            }
+            successRate = (winGames/totalGames)*100;
+        }
 
     }
 }

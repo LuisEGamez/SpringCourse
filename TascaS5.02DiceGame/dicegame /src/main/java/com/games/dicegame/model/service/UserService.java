@@ -1,5 +1,6 @@
 package com.games.dicegame.model.service;
 
+import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface UserService {
 
     AppUserDto saveUser(AppUserInfo appUserInfo);
+
+    AppUserDto findUserById(Integer id);
 
     Role saveRole(Role role);
 
@@ -25,4 +28,6 @@ public interface UserService {
     AppUserDto getLoser();
 
     AppUserDto getWinner();
+
+    void updateUserGames(AppUserDto appUserDto, Game game);
 }
