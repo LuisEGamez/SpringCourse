@@ -58,20 +58,31 @@ public class GameController {
     }
 
     @PutMapping("/players/{id}")
-    public ResponseEntity<AppUserDto> updateUser(@PathVariable("id") Integer id, @RequestBody AppUserInfo appUserInfo){
+    public ResponseEntity<AppUserShowInfo> updateUser(@PathVariable("id") Integer id, @RequestBody AppUserInfo appUserInfo){
 
-        ResponseEntity<AppUserDto> response;
-        AppUserDto appUserDto;
+        ResponseEntity<AppUserShowInfo> response;
+        AppUserShowInfo appUserShowInfo;
+        boolean updated;
+        AppUserDto appUserDto, appUserDtoUpdated;
+
 
         try {
-            appUserDto = userService.updateUser(id, appUserInfo);
-            if(appUserDto == null){
-
-                response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            appUserDto = userService.findUserById(id);
+            if(appUserDto != null){
+                updated = userService.updateUser(id, appUserInfo);
+                if(updated){
+                    //appUserDtoUpdated = userService.findUserById(id);
+                    appUserDto.setUsername(appUserInfo.getUsername().toUpperCase());
+                    appUserShowInfo = userService.appUserDtoToAppUserInfo(appUserDto);
+                    response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
+                }else {
+                    response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
             }else {
-
-                response = new ResponseEntity<>(appUserDto, HttpStatus.OK);
+                response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
+
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

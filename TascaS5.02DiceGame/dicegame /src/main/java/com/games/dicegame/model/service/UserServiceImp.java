@@ -9,6 +9,7 @@ import com.games.dicegame.model.repository.GameRepository;
 import com.games.dicegame.model.repository.RoleRepository;
 import com.games.dicegame.model.security.UserDetailsCustom;
 import com.games.dicegame.model.util.AppUserInfo;
+import com.games.dicegame.model.util.AppUserShowInfo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +85,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return new AppUser(appUserDto);
     }
 
+    public AppUserShowInfo appUserDtoToAppUserInfo(AppUserDto appUserDto){
+
+        return new AppUserShowInfo(appUserDto);
+    }
+
     @Override
     public AppUserDto saveUser(AppUserInfo appUserInfo) {
 
@@ -92,12 +98,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if(!appUserRepository.existsByEmail(appUserDto.getEmail())){
 
-            if((!appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) && (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
+            if((!appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) &&
+                    (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
 
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
-                        passwordEncoder.encode(appUserDto.getPassword()),
-                        appUserDto.getUsername(),
-                        appUserDto.getRegistrationDate()));
+                            passwordEncoder.encode(appUserDto.getPassword()),
+                            appUserDto.getUsername(),
+                            appUserDto.getRegistrationDate()));
 
                 addRoleToUser(appUser.getEmail(), "ROLE_USER");
                 appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
@@ -129,28 +136,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public AppUserDto updateUser(Integer id, AppUserInfo appUserInfo) {
+    public boolean updateUser(Integer id, AppUserInfo appUserInfo) {
 
-        AppUserDto appUserDto = null;
-        Optional<AppUser> appUserData;
-        AppUser appUser;
+        boolean updated = false;
 
-        if(appUserRepository.existsById(id) && appUserInfo.getUsername()!= null){
-
-            appUserDto = new AppUserDto(null, null, appUserInfo.getUsername());
-
-            appUserRepository.updateUser(appUserDto.getUsername(), id);
-
-            appUserData = appUserRepository.findById(id);
-
-            if(appUserData.isPresent()){
-                appUser = appUserData.get();
-                appUserDto.setUsername(appUser.getUsername());
-            }
-
+        if(appUserInfo.getUsername()!= null && !appUserRepository.existsByUsername(appUserInfo.getUsername())){
+            appUserRepository.updateUser(appUserInfo.getUsername().toUpperCase(), id);
+            updated = true;
         }
 
-        return appUserDto;
+        return updated;
     }
 
     @Override

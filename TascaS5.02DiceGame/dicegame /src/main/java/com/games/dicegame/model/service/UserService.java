@@ -5,6 +5,7 @@ import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.util.AppUserInfo;
+import com.games.dicegame.model.util.AppUserShowInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,11 +16,13 @@ public interface UserService {
 
     AppUserDto findUserById(Integer id);
 
+    AppUserShowInfo appUserDtoToAppUserInfo(AppUserDto appUserDto);
+
     void addRoleToUser(String email, String roleName);
 
     List<AppUserDto> getUsers();
 
-    AppUserDto updateUser(Integer id, AppUserInfo appUserInfo);
+    boolean updateUser(Integer id, AppUserInfo appUserInfo);
 
     List<AppUserDto> getRanking();
 
