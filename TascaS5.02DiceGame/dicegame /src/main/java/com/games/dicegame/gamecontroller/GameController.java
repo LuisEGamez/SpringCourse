@@ -179,7 +179,7 @@ public class GameController {
         List<AppUserShowInfo> usersShowInfo = new ArrayList<>();
         try {
             users = userService.getRanking();
-            users.forEach(appUserDto -> usersShowInfo.add(new AppUserShowInfo(appUserDto)));
+            users.forEach(appUserDto -> usersShowInfo.add(userService.appUserDtoToAppUserInfo(appUserDto)));
             response = new ResponseEntity<>(usersShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -196,7 +196,7 @@ public class GameController {
         AppUserShowInfo appUserShowInfo;
         try {
             user = userService.getLoser();
-            appUserShowInfo = new AppUserShowInfo(user);
+            appUserShowInfo = userService.appUserDtoToAppUserInfo(user);
             response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -213,7 +213,7 @@ public class GameController {
         AppUserShowInfo appUserShowInfo;
         try {
             user = userService.getWinner();
-            appUserShowInfo = new AppUserShowInfo(user);
+            appUserShowInfo = userService.appUserDtoToAppUserInfo(user);
             response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
