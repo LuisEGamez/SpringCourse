@@ -2,12 +2,12 @@ package com.games.dicegame.model.service;
 
 import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.domain.Game;
+import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
 import com.games.dicegame.model.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -54,9 +54,17 @@ class GameServiceImpTest {
 
         verify(gameRepository).save(any());
     }
-    
+
     @Test
     public void whenUserDeleteGameVerifyDeleteGameById(){
+
+        gameService.deleteGames(2);
+
+        verify(gameRepository).deleteByIdPlayer(2);
+    }
+
+    @Test
+    public void whenUserGetGamesThemReturnArray(){
 
         gameService.deleteGames(2);
 
