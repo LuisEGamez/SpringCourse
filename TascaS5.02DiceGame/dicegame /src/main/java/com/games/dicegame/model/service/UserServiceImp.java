@@ -87,15 +87,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if(!appUserRepository.existsByEmail(appUserDto.getEmail())){
 
-            if((appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) ||
-                    (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
+            if(appUserInfo.getUsername() == null || (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
 
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
                             passwordEncoder.encode(appUserDto.getPassword()),
                             appUserDto.getUsername(),
                             appUserDto.getRegistrationDate()));
 
-                //addRoleToUser(appUser.getEmail(), "ROLE_USER");
                 appUserDto.setId(appUser.getId());
             }
 
