@@ -74,22 +74,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if(appUserData.isPresent()){
             appUser =  appUserData.get();
-            appUserDto = appUserToAppUserDto(appUser);
+            appUserDto = new AppUserDto(appUser);
         }
         return appUserDto;
-    }
-
-    public AppUserDto appUserToAppUserDto(AppUser appUser){
-        return new AppUserDto(appUser);
-    }
-
-    public AppUser appUserDtoToAppUser(AppUserDto appUserDto){
-        return new AppUser(appUserDto);
-    }
-
-    public AppUserShowInfo appUserDtoToAppUserInfo(AppUserDto appUserDto){
-
-        return new AppUserShowInfo(appUserDto);
     }
 
     @Override
@@ -183,7 +170,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public void updateUserGames(AppUserDto appUserDto) {
 
         appUserDto.updateRate(appUserDto.getGames());
-        AppUser appUser = appUserDtoToAppUser(appUserDto);
+        AppUser appUser = new AppUser(appUserDto);
         appUserRepository.save(appUser);
     }
 

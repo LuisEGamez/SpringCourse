@@ -76,7 +76,7 @@ public class GameController {
                 if(updated){
                     //appUserDtoUpdated = userService.findUserById(id);
                     appUserDto.setUsername(appUserInfo.getUsername().toUpperCase());
-                    appUserShowInfo = userService.appUserDtoToAppUserInfo(appUserDto);
+                    appUserShowInfo = new AppUserShowInfo(appUserDto);
                     response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
                 }else {
                     response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -182,7 +182,7 @@ public class GameController {
         List<AppUserShowInfo> usersShowInfo = new ArrayList<>();
         try {
             users = userService.getRanking();
-            users.forEach(appUserDto -> usersShowInfo.add(userService.appUserDtoToAppUserInfo(appUserDto)));
+            users.forEach(appUserDto -> usersShowInfo.add(new AppUserShowInfo(appUserDto)));
             response = new ResponseEntity<>(usersShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -199,7 +199,7 @@ public class GameController {
         AppUserShowInfo appUserShowInfo;
         try {
             user = userService.getLoser();
-            appUserShowInfo = userService.appUserDtoToAppUserInfo(user);
+            appUserShowInfo = new AppUserShowInfo(user);
             response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -216,7 +216,7 @@ public class GameController {
         AppUserShowInfo appUserShowInfo;
         try {
             user = userService.getWinner();
-            appUserShowInfo = userService.appUserDtoToAppUserInfo(user);
+            appUserShowInfo = new AppUserShowInfo(user);
             response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
         }catch (Exception e){
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

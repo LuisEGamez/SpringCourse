@@ -16,11 +16,6 @@ public interface UserService {
 
     AppUserDto findUserById(Integer id);
 
-    AppUserDto appUserToAppUserDto(AppUser appUser);
-
-    AppUser appUserDtoToAppUser(AppUserDto appUserDto);
-
-    AppUserShowInfo appUserDtoToAppUserInfo(AppUserDto appUserDto);
 
     void addRoleToUser(String email, String roleName);
 
