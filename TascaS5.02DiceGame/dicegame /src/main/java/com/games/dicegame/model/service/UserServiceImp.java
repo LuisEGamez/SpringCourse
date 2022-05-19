@@ -34,7 +34,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImp implements UserService, UserDetailsService {
     private AppUserRepository appUserRepository;
-    private RoleRepository roleRepository;
+
+
+    private RoleService roleService;
 
     private PasswordEncoder passwordEncoder; // We need encoder the password before to save in the database.
 
@@ -98,7 +100,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if(!appUserRepository.existsByEmail(appUserDto.getEmail())){
 
-            if((!appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) &&
+            if((appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) ||
                     (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
 
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
@@ -106,18 +108,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
                             appUserDto.getUsername(),
                             appUserDto.getRegistrationDate()));
 
-                addRoleToUser(appUser.getEmail(), "ROLE_USER"); // extraer
-                appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                        appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles()); // hacer set  id
-
-            } else if ( (appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS"))) {
-                appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
-                        passwordEncoder.encode(appUserDto.getPassword()),
-                        appUserDto.getUsername(),
-                        appUserDto.getRegistrationDate()));
-                addRoleToUser(appUser.getEmail(), "ROLE_USER");
-                appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                        appUser.getUsername(), appUser.getRegistrationDate(), appUser.getRoles());
+                //addRoleToUser(appUser.getEmail(), "ROLE_USER");
+                appUserDto.setId(appUser.getId());
             }
 
         }
@@ -130,7 +122,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         log.info("Adding role {} to user {}", roleName, email);
 
         AppUser appUser = appUserRepository.findByEmail(email);
-        Role role = roleRepository.findByName(roleName);
+        Role role = roleService.findRoleByName(roleName);
         appUser.getRoles().add(role);
 
     }

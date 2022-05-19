@@ -4,6 +4,7 @@ package com.games.dicegame.gamecontroller;
 import com.games.dicegame.model.domain.Game;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.service.GameService;
+import com.games.dicegame.model.service.RoleService;
 import com.games.dicegame.model.service.UserService;
 import com.games.dicegame.model.util.AppUserInfo;
 import com.games.dicegame.model.util.AppUserShowInfo;
@@ -24,6 +25,7 @@ public class GameController {
 
     private GameService gameService;
 
+
     public GameController(UserService userService, GameService gameService) {
         this.userService = userService;
         this.gameService = gameService;
@@ -41,6 +43,7 @@ public class GameController {
             if(appUserDto.getId()==null){
                 response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }else {
+                userService.addRoleToUser(appUserDto.getEmail(), "ROLE_USER");
                 response = new ResponseEntity<>(appUserDto, HttpStatus.CREATED);
             }
         }catch (Exception e){

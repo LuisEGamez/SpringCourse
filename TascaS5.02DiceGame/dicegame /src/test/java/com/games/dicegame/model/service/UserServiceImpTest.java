@@ -28,7 +28,7 @@ class UserServiceImpTest {
 
     @Mock AppUserRepository appUserRepository;
 
-    @Mock RoleRepository roleRepository;
+    @Mock RoleService roleService;
 
     @Mock PasswordEncoder passwordEncoder;
 
@@ -37,7 +37,7 @@ class UserServiceImpTest {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        userService = new UserServiceImp(appUserRepository, roleRepository, passwordEncoder);
+        userService = new UserServiceImp(appUserRepository, roleService, passwordEncoder);
 
     }
 
