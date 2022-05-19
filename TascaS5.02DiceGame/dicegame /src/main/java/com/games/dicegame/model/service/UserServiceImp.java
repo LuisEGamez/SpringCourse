@@ -36,7 +36,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private AppUserRepository appUserRepository;
     private RoleRepository roleRepository;
 
-    private GameRepository gameRepository;
     private PasswordEncoder passwordEncoder; // We need encoder the password before to save in the database.
 
     /*
@@ -70,6 +69,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         AppUser appUser;
         AppUserDto appUserDto = null;
         appUserData = appUserRepository.findById(id);
+
         if(appUserData.isPresent()){
             appUser =  appUserData.get();
             appUserDto = appUserToAppUserDto(appUser);
@@ -106,9 +106,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
                             appUserDto.getUsername(),
                             appUserDto.getRegistrationDate()));
 
-                addRoleToUser(appUser.getEmail(), "ROLE_USER");
+                addRoleToUser(appUser.getEmail(), "ROLE_USER"); // extraer
                 appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                        appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles());
+                        appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles()); // hacer set  id
 
             } else if ( (appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS"))) {
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
