@@ -4,6 +4,7 @@ import com.games.dicegame.model.domain.AppUser;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
 import com.games.dicegame.model.repository.RoleRepository;
+import com.games.dicegame.model.util.AppUserInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -73,17 +75,72 @@ class UserServiceImpTest {
     @Test
     public void whenLoadUserByUsernameDoesNotFindUserThenThrowException(){
 
-        when(appUserRepository.findByEmail("vacio")).thenReturn(null);
+        when(appUserRepository.findByEmail("empty")).thenReturn(null);
 
         UsernameNotFoundException thrown = assertThrows(
                 UsernameNotFoundException.class,
-                () -> userService.loadUserByUsername("vacio")
+                () -> userService.loadUserByUsername("empty")
         );
 
         assertTrue(thrown.getMessage().contains("User not found in the database"));
 
     }
 
+    @Test
+    public void whenSaveUserWithKnownEmailThenReturnSameUserDtoWithoutId(){
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
+        AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
+        appUserDto.setId(1);
 
+        //when
+        when(appUserRepository.existsByEmail(appUserDto.getEmail())).thenReturn(true);
+
+        //act
+        AppUserDto expected = userService.saveUser(appUserInfo);
+
+        //then
+        assertThat(expected.getId()).isNull();
+
+    }
+
+    @Test
+    public void whenSaveUserWithUnknownEmailAndUsernameThenReturnUserDtoWithId(){
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
+        AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
+        appUserDto.setId(1);
+
+        //when
+        when(appUserRepository.existsByEmail(appUserDto.getEmail())).thenReturn(false);
+        when(appUserRepository.existsByUsername(appUserDto.getUsername())).thenReturn(false);
+        when(appUserRepository.save(any())).thenReturn(new AppUser(appUserDto));
+
+        //act
+        AppUserDto expected = userService.saveUser(appUserInfo);
+
+        //then
+        assertThat(expected.getId()).isEqualTo(1);
+
+    }
+
+    @Test
+    public void whenSaveUserWithoutUsernameThenReturnUserDtoWithId(){
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", null);
+        AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
+        appUserDto.setId(1);
+
+        //when
+        when(appUserRepository.existsByEmail(appUserDto.getEmail())).thenReturn(false);
+        when(appUserRepository.save(any())).thenReturn(new AppUser(appUserDto));
+
+        //act
+        AppUserDto expected = userService.saveUser(appUserInfo);
+
+        //then
+        assertThat(expected.getId()).isEqualTo(1);
+
+    }
 
 }
