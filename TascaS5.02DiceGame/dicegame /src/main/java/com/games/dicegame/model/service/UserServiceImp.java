@@ -109,6 +109,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         AppUser appUser = appUserRepository.findByEmail(email);
         Role role = roleService.findRoleByName(roleName);
         appUser.getRoles().add(role);
+        appUserRepository.save(appUser);
 
     }
 
