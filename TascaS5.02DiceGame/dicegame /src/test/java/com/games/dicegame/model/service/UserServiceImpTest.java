@@ -207,6 +207,27 @@ class UserServiceImpTest {
         //then
         assertThat(expected).isFalse();
 
+    }
+
+    @Test
+    public void whenGetUsersThemReturnAList(){
+
+        //act
+        userService.getUsers();
+
+        //then
+        verify(appUserRepository).findAll();
+
+    }
+
+    @Test
+    public void whenGetRankingThemReturnAList(){
+
+        //act
+        userService.getRanking();
+
+        //then
+        verify(appUserRepository).findAllByOrderBySuccessRateDesc();
 
     }
 
