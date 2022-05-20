@@ -32,7 +32,7 @@ class UserServiceImpTest {
 
     @Mock PasswordEncoder passwordEncoder;
 
-    UserServiceImp userService;
+    private UserServiceImp userService;
 
     @BeforeEach
     void setUp() {
