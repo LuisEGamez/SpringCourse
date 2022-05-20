@@ -1,6 +1,7 @@
 package com.games.dicegame.model.service;
 
 import com.games.dicegame.model.domain.AppUser;
+import com.games.dicegame.model.domain.Role;
 import com.games.dicegame.model.dto.AppUserDto;
 import com.games.dicegame.model.repository.AppUserRepository;
 import com.games.dicegame.model.repository.RoleRepository;
@@ -140,6 +141,39 @@ class UserServiceImpTest {
 
         //then
         assertThat(expected.getId()).isEqualTo(1);
+
+    }
+
+    @Test
+    public void whenAddRoleToUserVerifySaveUser(){
+
+        String email = "luis@gmail.com";
+        String rolName = "ROLE_USER";
+
+        when(appUserRepository.findByEmail(email)).thenReturn(new AppUser());
+        when(roleService.findRoleByName(rolName)).thenReturn(new Role());
+
+        userService.addRoleToUser(email, rolName);
+
+
+        verify(appUserRepository).save(any());
+    }
+
+    @Test
+    public void whenUpdateUserThemReturn(){
+
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
+
+        //when
+        when(appUserRepository.existsByUsername(appUserInfo.getUsername())).thenReturn(false);
+
+        //act
+        boolean expected = userService.updateUser(1, appUserInfo);
+
+        //then
+        assertThat(expected).isTrue();
+
 
     }
 
