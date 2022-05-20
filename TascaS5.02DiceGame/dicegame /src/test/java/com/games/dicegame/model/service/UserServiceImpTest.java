@@ -160,7 +160,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenUpdateUserThemReturn(){
+    public void whenUpdateUserThemReturnTrue(){
 
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
@@ -173,6 +173,39 @@ class UserServiceImpTest {
 
         //then
         assertThat(expected).isTrue();
+
+
+    }
+
+    @Test
+    public void whenUpdateUserWithoutUsernameThemNotUpdate(){
+
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", null);
+
+
+        //act
+        boolean expected = userService.updateUser(1, appUserInfo);
+
+        //then
+        assertThat(expected).isFalse();
+
+    }
+
+    @Test
+    public void whenUpdateUserWithKnowUsernameThemNotUpdate(){
+
+        //given
+        AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
+
+        //when
+        when(appUserRepository.existsByUsername(appUserInfo.getUsername())).thenReturn(true);
+
+        //act
+        boolean expected = userService.updateUser(1, appUserInfo);
+
+        //then
+        assertThat(expected).isFalse();
 
 
     }
