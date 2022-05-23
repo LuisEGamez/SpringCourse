@@ -44,7 +44,7 @@ public class AppUserDto implements Serializable {
         registrationDate = appUser.getRegistrationDate();
         roles = appUser.getRoles();
         games = appUser.getGames();
-        successRate = calculateRate(this.games);
+        updateRate(this.games);
     }
 
     public String formatUsername(String username){
@@ -57,33 +57,14 @@ public class AppUserDto implements Serializable {
         return result;
     }
 
-    public double calculateRate(Collection<Game> games){
-
-        double totalGames;
-        int winGames = 0;
-        double result = 0;
-
-
-        if(!games.isEmpty()){
-            totalGames = games.size();
-            for (Game game: games) {
-                if(game.getResult().equalsIgnoreCase("WIN")){
-                    winGames++;
-                }
-            }
-            result = (winGames/totalGames)*100;
-        }
-
-        return result;
-
-    }
-
     public void updateRate(Collection<Game> games){
 
         double totalGames;
         int winGames = 0;
 
-        if(!games.isEmpty()){
+        if(games.isEmpty()){
+            successRate = 0;
+        }else{
             totalGames = games.size();
             for (Game game: games) {
                 if(game.getResult().equalsIgnoreCase("WIN")){
@@ -91,10 +72,7 @@ public class AppUserDto implements Serializable {
                 }
             }
             successRate = (winGames/totalGames)*100;
-        }else{
-            successRate = 0;
         }
-
     }
 
     @Override
