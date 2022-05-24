@@ -51,17 +51,6 @@ public class AppUserDto implements Serializable {
         this.roles = roles;
     }
 
-    public AppUserDto(String id, String email, String password, String username, Date registrationDate, Collection<String> roles, Collection<Game> games) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.username = username;
-        this.registrationDate = registrationDate;
-        this.roles = roles;
-        this.games = games;
-        successRate = calculateRate(this.games);
-    }
-
     public AppUserDto(AppUser appUser) {
         id = appUser.getId();
         email = appUser.getEmail();

@@ -12,9 +12,6 @@ public interface AppUserRepository extends MongoRepository<AppUser, String> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 
-    /*@Query("UPDATE users SET username = ?1 WHERE id = ?2")
-    void updateUser(String username, Integer id );*/
-
     List<AppUser> findAllByOrderBySuccessRateDesc();
 
     AppUser findFirstByOrderBySuccessRateAsc();

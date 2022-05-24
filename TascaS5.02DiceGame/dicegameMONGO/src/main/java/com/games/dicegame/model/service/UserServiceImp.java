@@ -56,6 +56,20 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return new UserDetailsCustom(appUser.getId(), appUser.getEmail(), appUser.getPassword(), authorities); // Return a valid user for Spring Security
     }
 
+    public AppUserDto findUserById(String id){
+
+        Optional<AppUser> appUserData;
+        AppUser appUser;
+        AppUserDto appUserDto = null;
+        appUserData = appUserRepository.findById(id);
+
+        if(appUserData.isPresent()){
+            appUser =  appUserData.get();
+            appUserDto = new AppUserDto(appUser);
+        }
+        return appUserDto;
+    }
+
     @Override
     public AppUserDto saveUser(AppUserInfo appUserInfo) {
 
@@ -64,30 +78,17 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         if(!appUserRepository.existsByEmail(appUserDto.getEmail())){
 
-            if((!appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS")) && (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
+            if(appUserInfo.getUsername() == null || (!appUserRepository.existsByUsername(appUserDto.getUsername())) ){
 
                 appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
                         passwordEncoder.encode(appUserDto.getPassword()),
                         appUserDto.getUsername(),
                         appUserDto.getRegistrationDate()));
 
-                addRoleToUser(appUser.getEmail(), "ROLE_USER");
-                appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                        appUser.getUsername(), appUser.getRegistrationDate(),appUser.getRoles());
-
-            } else if ( (appUserDto.getUsername().equalsIgnoreCase("ANONYMOUS"))) {
-                appUser = appUserRepository.save(new AppUser(appUserDto.getEmail(),
-                        passwordEncoder.encode(appUserDto.getPassword()),
-                        appUserDto.getUsername(),
-                        appUserDto.getRegistrationDate()));
-                addRoleToUser(appUser.getEmail(), "ROLE_USER");
-                appUserDto = new AppUserDto(appUser.getId(), appUser.getEmail(), appUser.getPassword(),
-                        appUser.getUsername(), appUser.getRegistrationDate(), appUser.getRoles());
+                appUserDto.setId(appUser.getId());
             }
 
         }
-
-
         return appUserDto;
     }
 

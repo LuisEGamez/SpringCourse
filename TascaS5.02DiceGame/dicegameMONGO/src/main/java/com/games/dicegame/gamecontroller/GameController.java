@@ -36,6 +36,7 @@ public class GameController {
             if(appUserDto.getId()==null){
                 response = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }else {
+                userService.addRoleToUser(appUserDto.getEmail(), "ROLE_USER");
                 response = new ResponseEntity<>(appUserDto, HttpStatus.CREATED);
             }
         }catch (Exception e){

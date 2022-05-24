@@ -61,7 +61,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String access_token = JWT.create()
                                     .withSubject(userDetailsCustom.getUsername()) // Subject can be really any string that you so  that can be like the user id or username or something unique
                                                                                     // about the user so that you can identify the user by that specific token.
-                                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) // 10 min to expire the token
+                                    .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 10 min to expire the token
                                     .withIssuer(request.getRequestURL().toString()) // We pass the issuer(Emisor) from request
                                     .withClaim("user_id",userDetailsCustom.getId())
                                     .withClaim("roles", userDetailsCustom.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())) //We pass in all the claims so all the roles for that specific user
