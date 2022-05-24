@@ -48,9 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         //customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
-        http.csrf().disable(); // Disable a Cross Site Request Forgery
+        http.csrf().disable(); // Disable a Cross Site Request Forgery v3/api-docs
         http.sessionManagement().sessionCreationPolicy(STATELESS); // No session will be created or used by Spring Security.
         http.authorizeRequests().antMatchers("/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/swagger-ui/**").permitAll();
+        http.authorizeRequests().antMatchers("/v3/api-docs/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/api/players").permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterAfter(new CustomAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
