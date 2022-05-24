@@ -66,15 +66,13 @@ public class GameController {
         ResponseEntity<AppUserShowInfo> response;
         AppUserShowInfo appUserShowInfo;
         boolean updated;
-        AppUserDto appUserDto, appUserDtoUpdated;
-
+        AppUserDto appUserDto;
 
         try {
             appUserDto = userService.findUserById(id);
             if(appUserDto != null){
                 updated = userService.updateUser(id, appUserInfo);
                 if(updated){
-                    //appUserDtoUpdated = userService.findUserById(id);
                     appUserDto.setUsername(appUserInfo.getUsername().toUpperCase());
                     appUserShowInfo = new AppUserShowInfo(appUserDto);
                     response = new ResponseEntity<>(appUserShowInfo, HttpStatus.OK);
