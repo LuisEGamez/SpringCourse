@@ -15,22 +15,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import org.springframework.test.context.ContextConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+@ContextConfiguration(classes = {UserServiceImp.class})
 @ExtendWith(MockitoExtension.class)
 class UserServiceImpTest {
+    @Mock
+    AppUserRepository appUserRepository;
 
+    @Mock
+    RoleService roleService;
 
-    @Mock AppUserRepository appUserRepository;
-
-    @Mock RoleService roleService;
-
-    @Mock PasswordEncoder passwordEncoder;
+    @Mock
+    PasswordEncoder passwordEncoder;
 
     private UserServiceImp userService;
 
@@ -57,7 +61,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenFindUserByIdReturnNullThenUserDtoIsNull(){
+    public void whenFindUserByIdReturnNullThenUserDtoIsNull() {
 
         Optional<AppUser> appUser = Optional.empty();
         AppUserDto expected = null;
@@ -71,7 +75,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenLoadUserByUsernameDoesNotFindUserThenThrowException(){
+    public void whenLoadUserByUsernameDoesNotFindUserThenThrowException() {
 
         when(appUserRepository.findByEmail("empty")).thenReturn(null);
 
@@ -85,7 +89,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenSaveUserWithKnownEmailThenReturnSameUserDtoWithoutId(){
+    public void whenSaveUserWithKnownEmailThenReturnSameUserDtoWithoutId() {
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
         AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
@@ -103,7 +107,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenSaveUserWithUnknownEmailAndUsernameThenReturnUserDtoWithId(){
+    public void whenSaveUserWithUnknownEmailAndUsernameThenReturnUserDtoWithId() {
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
         AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
@@ -123,7 +127,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenSaveUserWithoutUsernameThenReturnUserDtoWithId(){
+    public void whenSaveUserWithoutUsernameThenReturnUserDtoWithId() {
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", null);
         AppUserDto appUserDto = new AppUserDto(appUserInfo.getEmail(), appUserInfo.getPassword(), appUserInfo.getUsername());
@@ -142,7 +146,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenAddRoleToUserVerifySaveUser(){
+    public void whenAddRoleToUserVerifySaveUser() {
 
         String email = "luis@gmail.com";
         String rolName = "ROLE_USER";
@@ -157,7 +161,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenUpdateUserThemReturnTrue(){
+    public void whenUpdateUserThemReturnTrue() {
 
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
@@ -175,7 +179,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenUpdateUserWithoutUsernameThemNotUpdate(){
+    public void whenUpdateUserWithoutUsernameThemNotUpdate() {
 
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", null);
@@ -190,7 +194,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    public void whenUpdateUserWithKnowUsernameThemNotUpdate(){
+    public void whenUpdateUserWithKnowUsernameThemNotUpdate() {
 
         //given
         AppUserInfo appUserInfo = new AppUserInfo("luis@gmail.com", "123456", "luis");
