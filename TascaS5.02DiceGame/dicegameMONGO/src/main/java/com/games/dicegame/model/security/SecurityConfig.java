@@ -46,11 +46,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+        //customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.csrf().disable(); // Disable a Cross Site Request Forgery
         http.sessionManagement().sessionCreationPolicy(STATELESS); // No session will be created or used by Spring Security.
         http.authorizeRequests().antMatchers("/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/swagger-ui/**").permitAll();
+        http.authorizeRequests().antMatchers("/v3/api-docs/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/api/players").permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterAfter(new CustomAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class); // We put the filter and the filter before of this.
@@ -58,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(DELETE, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
         http.authorizeRequests().antMatchers(GET, "/api/players/{id}/games/**").access("@userSecurity.hasId(authentication,#id)"); // Give access t
         http.authorizeRequests().antMatchers(GET, "/api/players").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
 
 
     }
