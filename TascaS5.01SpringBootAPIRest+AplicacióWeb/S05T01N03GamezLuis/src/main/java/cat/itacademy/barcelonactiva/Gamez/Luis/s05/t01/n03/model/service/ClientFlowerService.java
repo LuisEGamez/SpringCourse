@@ -86,7 +86,8 @@ public class ClientFlowerService {
 
         return client.get()
                 .uri("/getAll")
-                .retrieve().toEntityList(ClientFlowerDTO.class)
+                .retrieve()
+                .toEntityList(ClientFlowerDTO.class)
                 .onErrorResume(WebClientResponseException.class,
                         ex -> ex.getRawStatusCode() == 500 ? Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)) : Mono.error(ex));
     }

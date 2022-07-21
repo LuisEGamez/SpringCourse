@@ -2,12 +2,14 @@ package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.controllers;
 
 import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.model.dto.ClientFlowerDTO;
 import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.model.service.ClientFlowerService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -51,11 +53,17 @@ public class ClientFlowerController {
 
     }
 
+    @CircuitBreaker(name = "FLOWERS", fallbackMethod = "fallBack")
     @GetMapping("clientFlowersGetAll")
     public Mono<ResponseEntity<List<ClientFlowerDTO>>> getAllClienteFlower(){
 
         return clientFlowerService.getAllClienteFlower();
 
+    }
+
+    private Mono<ResponseEntity<List<ClientFlowerDTO>>> fallBack( Exception e) {
+        List<ClientFlowerDTO> list = new ArrayList<>();
+        return Mono.just(new ResponseEntity<>(list,  HttpStatus.OK));
     }
 
 
