@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +62,23 @@ public class ClientFlowerController {
 
     }
 
+    @CircuitBreaker(name = "FLOWERS", fallbackMethod = "fallBack1")
+    @GetMapping("clientFlowersGetAll1")
+    public Mono<ResponseEntity<List<ClientFlowerDTO>>> getAllClienteFlower1() throws MalformedURLException {
+
+        return clientFlowerService.getAllClienteFlowerProxy();
+
+    }
+
     private Mono<ResponseEntity<List<ClientFlowerDTO>>> fallBack( Exception e) {
         List<ClientFlowerDTO> list = new ArrayList<>();
         return Mono.empty();
+    }
+
+    private Mono<ResponseEntity<List<ClientFlowerDTO>>> fallBack1( Exception e) {
+        List<ClientFlowerDTO> list = new ArrayList<>();
+        list.add(new ClientFlowerDTO("Rooo", "Spain"));
+        return Mono.just(new ResponseEntity<>(list, HttpStatus.OK));
     }
 
 

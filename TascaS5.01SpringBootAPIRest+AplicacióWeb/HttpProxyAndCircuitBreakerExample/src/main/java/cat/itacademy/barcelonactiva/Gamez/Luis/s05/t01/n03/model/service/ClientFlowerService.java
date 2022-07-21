@@ -1,13 +1,19 @@
 package cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.model.service;
 
 import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.model.dto.ClientFlowerDTO;
+import cat.itacademy.barcelonactiva.Gamez.Luis.s05.t01.n03.model.proxy.HttpProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +21,9 @@ public class ClientFlowerService {
 
     // Creating a WebClient Instance
     WebClient client = WebClient.create("http://localhost:9001/flower");
+
+    @Autowired
+    HttpProxy httpProxy;
 
     public Mono<ResponseEntity<ClientFlowerDTO>> saveClientFlower(ClientFlowerDTO clientFlowerDTO){
         // Preparing a Request
@@ -32,6 +41,8 @@ public class ClientFlowerService {
 
             return response;
     }
+
+
 
 
     public Mono<ResponseEntity<ClientFlowerDTO>> updateClientFlower(String clientFlowerName, ClientFlowerDTO clientFlowerDTO) {
@@ -90,5 +101,10 @@ public class ClientFlowerService {
                 .toEntityList(ClientFlowerDTO.class)
                 .onErrorResume(WebClientResponseException.class,
                         ex -> ex.getRawStatusCode() == 500 ? Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)) : Mono.error(ex));
+    }
+
+    public Mono<ResponseEntity<List<ClientFlowerDTO>>> getAllClienteFlowerProxy() throws MalformedURLException {
+
+        return httpProxy.getRequestData(new URL("http://localhost:9001/flower/getAll"), ClientFlowerDTO.class);
     }
 }
