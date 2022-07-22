@@ -70,6 +70,14 @@ public class ClientFlowerController {
 
     }
 
+    @CircuitBreaker(name = "FLOWERS", fallbackMethod = "fallBack1")
+    @GetMapping("clientFlowersGetAll2")
+    public Mono<ClientFlowerDTO[]> getAllClienteFlower2() throws MalformedURLException {
+
+        return clientFlowerService.getAllClienteFlowerProxy1();
+
+    }
+
     private Mono<ResponseEntity<List<ClientFlowerDTO>>> fallBack( Exception e) {
         List<ClientFlowerDTO> list = new ArrayList<>();
         return Mono.empty();

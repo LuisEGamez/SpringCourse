@@ -107,4 +107,9 @@ public class ClientFlowerService {
 
         return httpProxy.getRequestData(new URL("http://localhost:9001/flower/getAll"), ClientFlowerDTO.class);
     }
+
+    public Mono<ClientFlowerDTO[]> getAllClienteFlowerProxy1() throws MalformedURLException {
+
+        return httpProxy.getRequestData1(new URL("http://localhost:9001/flower/getAll"), ClientFlowerDTO[].class);
+    }
 }

@@ -52,4 +52,10 @@ public class HttpProxy {
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(URI.create(url.toString()));
         return bodySpec.retrieve().toEntityList(clazz);
     }
+
+    public <T> Mono<T> getRequestData1(URL url, Class<T> clazz){
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(URI.create(url.toString()));
+        return bodySpec.retrieve().bodyToMono(clazz);
+    }
 }
